@@ -3,6 +3,6 @@
 
 #include "robot_classes.hpp"
 #include "pid.hpp"
-#include "timing.h"
+#include "timing.hpp"
 
 #endif
