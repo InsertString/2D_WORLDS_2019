@@ -50,4 +50,26 @@ private:
   //target for gyro value
   int turn_target;
 };
+
+
+
+
+
+
+
+
+class Ball_Systems {
+public:
+private:
+};
+
+
+
+
+
+
+class Lift_Systems {
+
+};
+
 #endif
