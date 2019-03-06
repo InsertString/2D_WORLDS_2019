@@ -9,6 +9,7 @@
 
 class Chassis_Systems {
 public:
+  Chassis_Systems();
   /*autoChassisPID//
   -when driving, the gyro will constatly reset
   -when turning the encoders will constantly reset
@@ -36,19 +37,25 @@ public:
   -when not using the joysticks the function will apply holding power
   */
   void driveControl();
-
+  void resetChassisSensors(bool reset_gyro);
 
 private:
+  #define DRIVE_THRESHOLD 10
+
   void setLeft(int power);
   void setRight(int power);
 
 
-  //drive priority to priorities driving or turning
+  //drive priority to priorities driving, turning, or holding power
   int drive_priority;
   //target for drive encoder value
   int drive_target;
   //target for gyro value
   int turn_target;
+
+
+  int left;
+  int right;
 };
 
 
