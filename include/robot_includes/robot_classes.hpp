@@ -50,7 +50,7 @@ private:
   void setRight(int power);
 
 
-  //drive priority to priorities driving, turning, or holding power
+  //drive priority to prioritise driving, turning, or holding power
   int drive_priority;
   //target for drive encoder value
   int drive_target;
@@ -72,7 +72,26 @@ private:
 
 class Ball_Systems {
 public:
+
+  #define TARGET 0
+  #define LOAD 1
+  #define FIRE 2
+
+  #define STATE 1
+  #define LOADED 1
+  #define NOT_LOADED 2
+
+  Ball_Systems();
+
+  void setCatapultPower(int power);
+
+  void setIntakePower(int power);
+
+  //run this function in drive control
+  void driveControl();
+
 private:
+  int catapult_data[2];
 };
 
 

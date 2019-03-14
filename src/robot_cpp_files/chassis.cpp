@@ -90,24 +90,35 @@ void Chassis_Systems::aim_for_flags() {
 
 void Chassis_Systems::driveControl() {
 
+
+	//profiles the motor power to follow a more linear curve
   if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
     left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
     drive_priority = DRIVING;
     resetChassisSensors(false);
+		setLeft(left);
   }
   else {
-    left = 0;
+		//holds the drive position so that we dont get pushed
+		frontLeftDriveMotor.move_absolute(0, 50);
+		backLeftDriveMotor.move_absolute(0, 50);
   }
 
+
+
+
+	//profiles the motor power to follow a more linear curve
 	if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
 		right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
 		drive_priority = DRIVING;
     resetChassisSensors(false);
+		setRight(right);
 	}
 	else {
-    right = 0;
+		//holds the drive position so that we dont get pushed
+		frontRightDriveMotor.move_absolute(0, 50);
+		backRightDriveMotor.move_absolute(0, 50);
   }
 
-	setLeft(left);
-	setRight(right);
+
 }

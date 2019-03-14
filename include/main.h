@@ -20,13 +20,18 @@
 
 
 
+//ADI PORTS//
+#define A 1
+#define B 2
+#define C 3
+#define D 4
+#define E 5
+#define F 6
+//~~~~~~~~~~~//
+
+
+
 //SENSOR PORTS//
-#define GYRO_PORT 0
-#define INTAKE_LIGHT_1_SENSOR_PORT 1
-#define INTAKE_LIGHT_2_SENSOR_PORT 2
-#define CATAPULT_POT_PORT 4
-#define CAP_SCORER_ARM_LIMIT_PORT 4
-#define AUTONOMOUS_SELECTOR_PORT 5
 #define VISION_PORT 15
 //~~~~~~~~~~~~//
 
