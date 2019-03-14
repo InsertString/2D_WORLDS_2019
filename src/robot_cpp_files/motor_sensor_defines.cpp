@@ -23,9 +23,10 @@ pros::Motor intakeMotor(INTAKE_MOTOR_PORT);
 pros::ADIGyro gyro(GYRO_PORT);
 pros::ADIAnalogIn intakeLight1Sensor(INTAKE_LIGHT_1_SENSOR_PORT);
 pros::ADIAnalogIn intakeLight2Sensor(INTAKE_LIGHT_2_SENSOR_PORT);
-pros::ADIAnalogIn catapultPot(CATAPULT_POT_PORT);
+pros::ADIDigitalIn catapultPot(CATAPULT_POT_PORT);
 pros::ADIAnalogIn capScoringArmLimit(CAP_SCORER_ARM_LIMIT_PORT);
 pros::ADIAnalogIn autonomousSelector(AUTONOMOUS_SELECTOR_PORT);
+pros::Vision vision(VISION_PORT);
 
 
 

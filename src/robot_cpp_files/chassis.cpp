@@ -63,23 +63,51 @@ void Chassis_Systems::resetChassisSensors(bool reset_gyro) {
 
 
 
+void Chassis_Systems::aim_for_flags() {
+	pros::vision_object_s_t flag = vision.get_by_sig(0, 1);
+
+	if (flag.height > 30 && flag.width > 30) {
+		if (flag.x_middle_coord < 10 && flag.x_middle_coord > -10) {
+			looking_for_flags = false;
+		}
+
+		if (flag.x_middle_coord > 0) {
+			setLeft(10);
+			setRight(-10);
+		}
+		else if (flag.x_middle_coord < 0) {
+			setLeft(-10);
+			setRight(10);
+		}
+	}
+}
+
+
+
+
+
+
+
 void Chassis_Systems::driveControl() {
 
-  if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD || abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
-    left = -master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
-		right = -master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
+  if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
+    left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
     drive_priority = DRIVING;
     resetChassisSensors(false);
   }
   else {
-    drive_priority = IDLE;
+    left = 0;
   }
 
-
-  if (drive_priority == IDLE) {
-    frontLeftDriveMotor.move_absolute(0, 50);
-    frontRightDriveMotor.move_absolute(0, 50);
-    backLeftDriveMotor.move_absolute(0, 50);
-    backRightDriveMotor.move_absolute(0, 50);
+	if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
+		right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
+		drive_priority = DRIVING;
+    resetChassisSensors(false);
+	}
+	else {
+    right = 0;
   }
+
+	setLeft(left);
+	setRight(right);
 }

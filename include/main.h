@@ -8,12 +8,12 @@
 #include "api.h"
 
 //MOTOR PORTS//
-#define CATAPULT_MOTOR_PORT 1
-#define INTAKE_MOTOR_PORT 2
-#define CAP_SCORER_MOTOR_PORT 3
+#define CATAPULT_MOTOR_PORT 11
+#define INTAKE_MOTOR_PORT 20
+#define CAP_SCORER_MOTOR_PORT 12
 #define CAP_FLIPPER_MOTOR_PRORT 4
-#define FRONT_RIGHT_DRIVE_MOTOR_PORT 11
-#define BACK_RIGHT_DRIVE_MOTOR_PORT 12
+#define FRONT_RIGHT_DRIVE_MOTOR_PORT 19
+#define BACK_RIGHT_DRIVE_MOTOR_PORT 18
 #define FRONT_LEFT_DRIVE_MOTOR_PORT 13
 #define BACK_LEFT_DRIVE_MOTOR_PORT 14
 //~~~~~~~~~~~~~//
@@ -24,9 +24,10 @@
 #define GYRO_PORT 0
 #define INTAKE_LIGHT_1_SENSOR_PORT 1
 #define INTAKE_LIGHT_2_SENSOR_PORT 2
-#define CATAPULT_POT_PORT 3
+#define CATAPULT_POT_PORT 4
 #define CAP_SCORER_ARM_LIMIT_PORT 4
 #define AUTONOMOUS_SELECTOR_PORT 5
+#define VISION_PORT 15
 //~~~~~~~~~~~~//
 
 #ifdef __cplusplus
@@ -71,9 +72,10 @@ extern pros::Motor intakeMotor;
 extern pros::ADIGyro gyro;
 extern pros::ADIAnalogIn intakeLight1Sensor;
 extern pros::ADIAnalogIn intakeLight2Sensor;
-extern pros::ADIAnalogIn catapultPot;
+extern pros::ADIDigitalIn catapultPot;
 extern pros::ADIAnalogIn capScoringArmLimit;
 extern pros::ADIAnalogIn autonomousSelector;
+extern pros::Vision vision;
 
 
 //class externs
