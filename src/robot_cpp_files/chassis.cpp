@@ -3,7 +3,7 @@
 
 
 
-Chassis_Systems::Chassis_Systems() {
+Base_System::Base_System() {
 	drive_priority = IDLE;
 	drive_target = 0;
 	turn_target = 0;
@@ -31,21 +31,21 @@ const unsigned int TrueSpeedArray[128] = {
 
 
 //sets the power for the left drive motors
-void Chassis_Systems::setLeft(int power) {
+void Base_System::setLeft(int power) {
   frontLeftDriveMotor = power;
   backLeftDriveMotor = power;
 }
 
 
 //sets the power for the right drive motors
-void Chassis_Systems::setRight(int power) {
+void Base_System::setRight(int power) {
   frontRightDriveMotor = -power;
   backRightDriveMotor = -power;
 }
 
 
 
-void Chassis_Systems::resetChassisSensors(bool reset_gyro) {
+void Base_System::resetChassisSensors(bool reset_gyro) {
   frontRightDriveMotor.tare_position();
   backRightDriveMotor.tare_position();
 
@@ -64,7 +64,7 @@ void Chassis_Systems::resetChassisSensors(bool reset_gyro) {
 
 
 
-void Chassis_Systems::driveControl() {
+void Base_System::driveControl() {
 
 
 	//profiles the motor power to follow a more linear curve

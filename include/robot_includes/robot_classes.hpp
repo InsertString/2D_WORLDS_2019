@@ -4,35 +4,24 @@
 
 
 
-class Chassis_Systems {
+class Vision_Systems {
+
+};
+
+
+
+
+class Base_System {
+  friend class Vision_Systems;
+  friend class Ball_Systems;
+  friend class Lift_Systems;
 public:
-  Chassis_Systems();
+  Base_System();
 
   #define IDLE 0
   #define DRIVING 1
   #define TURNING 2
   #define HOLDING 3
-
-  /*autoChassisPID//
-  -when driving, the gyro will constatly reset
-  -when turning the encoders will constantly reset
-
-  -when you set the drive target, it will drive to the desired value
-   then stop and hold power until the value is changed
-  -setting the dive target will reset the gyro target to 0
-   and set the drive priority to driving
-
-  -when you set the turn target, it will turn to the desired value
-   then stop and hold power until the value is changed
-  -setting the turn target will reset the drive encoders to 0
-  and set the drive priority to turning
-  */
-  void autoChassisPID();
-  void setDriveTarget(int target);
-  void setTurnTarget(int target);
-
-
-
 
   /*driveControl
   -when using the joysticks the function will apply truespeed

@@ -32,7 +32,7 @@ pros::Vision vision(VISION_PORT);
 
 
 //classes
-Chassis_Systems chassis;
+Base_System chassis;
 Ball_Systems ball_system;
 Lift_Systems lift_system;
 
