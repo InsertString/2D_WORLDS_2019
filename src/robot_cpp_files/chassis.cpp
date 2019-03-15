@@ -85,8 +85,8 @@ void Chassis_Systems::driveControl() {
 			left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
 		}
 		else if (left_drive_hold_state == HOLDING) {
-			frontLeftDriveMotor.move_absolute(0, 50);
-			backLeftDriveMotor.move_absolute(0, 50);
+		//	frontLeftDriveMotor.move_absolute(0, 50);
+		//	backLeftDriveMotor.move_absolute(0, 50);
 		}
   }
 
@@ -110,8 +110,8 @@ void Chassis_Systems::driveControl() {
 			right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
 		}
 		else if (right_drive_hold_state == HOLDING) {
-			frontRightDriveMotor.move_absolute(0, 50);
-			backRightDriveMotor.move_absolute(0, 50);
+		//	frontRightDriveMotor.move_absolute(0, 50);
+		//	backRightDriveMotor.move_absolute(0, 50);
 		}
   }
 

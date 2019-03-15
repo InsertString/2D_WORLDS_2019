@@ -22,7 +22,7 @@ Ball_Systems::Ball_Systems() {
 
 
 void Ball_Systems::setIntakePower(int power) {
-  intakeMotor = power;
+  intakeMotor = -power;
 }
 
 
@@ -52,9 +52,9 @@ void Ball_Systems::driveControl() {
 
   //CATAPULT CODE//
 
-  catapult_data[STATE] = (catapultLimit.get_value() == true && catapultPot.get_value() < 1200) ? LOADED : NOT_LOADED;
+  catapult_data[STATE] = (catapultLimit.get_value() == true) ? LOADED : NOT_LOADED;
 
-  if (master.get_digital_new_press(DIGITAL_R1) && catapult_data[STATE] == LOADED && loaded_ball_count > 0) {
+  if (master.get_digital_new_press(DIGITAL_R1) && catapult_data[STATE] == LOADED) {
     catapult_data[TARGET] = FIRE;
     ball_count = intakeLight1Sensor.get_value() < -100 ? 1 : 0;
     loaded_ball_count = 0;
@@ -63,7 +63,7 @@ void Ball_Systems::driveControl() {
 
 
   if (catapult_data[TARGET] == FIRE) {
-    if (catapult_data[STATE]) {
+    if (catapult_data[STATE] == LOADED) {
       setCatapultPower(127);
     }
     else {
@@ -86,7 +86,7 @@ void Ball_Systems::driveControl() {
 
   if (catapult_data[STATE] == LOADED) {
 
-    if (master.get_digital(DIGITAL_L1) || (master.get_digital(DIGITAL_L2) && intake_state() == EMPTY)) {
+    if (master.get_digital(DIGITAL_L1) || (master.get_digital(DIGITAL_R2) && intake_state() == EMPTY)) {
       setIntakePower(127);
       intake_direction = UP;
     }
