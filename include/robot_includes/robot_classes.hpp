@@ -3,13 +3,16 @@
 
 
 
-#define IDLE 0
-#define DRIVING 1
-#define TURNING 2
 
 class Chassis_Systems {
 public:
   Chassis_Systems();
+
+  #define IDLE 0
+  #define DRIVING 1
+  #define TURNING 2
+  #define HOLDING 3
+
   /*autoChassisPID//
   -when driving, the gyro will constatly reset
   -when turning the encoders will constantly reset
@@ -61,6 +64,9 @@ private:
 
   int left;
   int right;
+
+  int left_drive_hold_state;
+  int right_drive_hold_state;
 };
 
 

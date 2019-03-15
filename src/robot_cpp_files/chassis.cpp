@@ -95,13 +95,23 @@ void Chassis_Systems::driveControl() {
   if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
     left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
     drive_priority = DRIVING;
-    resetChassisSensors(false);
 		setLeft(left);
+		left_drive_hold_state = DRIVING;
   }
   else {
-		//holds the drive position so that we dont get pushed
-		frontLeftDriveMotor.move_absolute(0, 50);
-		backLeftDriveMotor.move_absolute(0, 50);
+		if (left_drive_hold_state == DRIVING) {
+			resetChassisSensors(false);
+			left_drive_hold_state = IDLE;
+			startTimer(LEFT_DRIVE_HOLD_TIMER);
+		}
+		else if (left_drive_hold_state == IDLE) {
+			left = 0;
+			left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
+		}
+		else if (left_drive_hold_state == HOLDING) {
+			frontLeftDriveMotor.move_absolute(0, 50);
+			backLeftDriveMotor.move_absolute(0, 50);
+		}
   }
 
 
@@ -111,13 +121,22 @@ void Chassis_Systems::driveControl() {
 	if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
 		right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
 		drive_priority = DRIVING;
-    resetChassisSensors(false);
 		setRight(right);
 	}
 	else {
-		//holds the drive position so that we dont get pushed
-		frontRightDriveMotor.move_absolute(0, 50);
-		backRightDriveMotor.move_absolute(0, 50);
+		if (right_drive_hold_state == DRIVING) {
+			resetChassisSensors(false);
+			right_drive_hold_state = IDLE;
+			startTimer(RIGHT_DRIVE_HOLD_TIMER);
+		}
+		else if (right_drive_hold_state == IDLE) {
+			left = 0;
+			right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
+		}
+		else if (right_drive_hold_state == HOLDING) {
+			frontRightDriveMotor.move_absolute(0, 50);
+			backRightDriveMotor.move_absolute(0, 50);
+		}
   }
 
 
