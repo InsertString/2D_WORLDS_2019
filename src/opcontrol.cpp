@@ -9,12 +9,16 @@ void opcontrol() {
 		chassis.driveControl();
 
 		pros::lcd::print(0, "cat pot = %d", catapultPot.get_value());
-		
-		if (master.get_digital(DIGITAL_R1) && catapultPot.get_value() == 0) {
+
+		if (i == 1 && catapultPot.get_value() == false) {
 			catapultMotor = 127;
 		}
-		if (master.get_digital(DIGITAL_R2)) {
+	 	else if (master.get_digital(DIGITAL_R2)) {
 			catapultMotor = 127;
+			i = 0;
+		}
+		else if (master.get_digital(DIGITAL_R1)) {
+			i = 1;
 		}
 		else {
 			catapultMotor = 0;
