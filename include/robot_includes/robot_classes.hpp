@@ -42,10 +42,6 @@ public:
   void driveControl();
   void resetChassisSensors(bool reset_gyro);
 
-
-
-  bool looking_for_flags;
-
 private:
   #define DRIVE_THRESHOLD 10
 
@@ -59,8 +55,6 @@ private:
   int drive_target;
   //target for gyro value
   int turn_target;
-
-  void aim_for_flags();
 
   int left;
   int right;
@@ -135,8 +129,6 @@ public:
   #define ZERO_ARM 0
   #define HOLDING_CAP 500
   #define SCORING_CAP 800
-
-
 
   Lift_Systems();
 

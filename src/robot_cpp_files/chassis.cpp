@@ -63,30 +63,6 @@ void Chassis_Systems::resetChassisSensors(bool reset_gyro) {
 
 
 
-void Chassis_Systems::aim_for_flags() {
-	pros::vision_object_s_t flag = vision.get_by_sig(0, 1);
-
-	if (flag.height > 30 && flag.width > 30) {
-		if (flag.x_middle_coord < 10 && flag.x_middle_coord > -10) {
-			looking_for_flags = false;
-		}
-
-		if (flag.x_middle_coord > 0) {
-			setLeft(10);
-			setRight(-10);
-		}
-		else if (flag.x_middle_coord < 0) {
-			setLeft(-10);
-			setRight(10);
-		}
-	}
-}
-
-
-
-
-
-
 
 void Chassis_Systems::driveControl() {
 
