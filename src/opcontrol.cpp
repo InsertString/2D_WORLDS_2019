@@ -1,14 +1,15 @@
 #include "main.h"
 
 void opcontrol() {
-	int i;
-	int a;
-	int b;
 
 	while (true) {
 		chassis.driveControl();
+		ball_system.driveControl();
 
-		pros::lcd::print(0, "cat pot = %d", catapultPot.get_value());
+		pros::lcd::print(0, "cat limit = %d", catapultLimit.get_value());
+		pros::lcd::print(1, "intake light = %d", intakeLight1Sensor.get_value());
+		pros::lcd::print(2, "ball count = %d", ball_system.ball_count);
+		pros::lcd::print(3, "loaded ball count = %d", ball_system.loaded_ball_count);
 /*
 		if (i == 1 && catapultPot.get_value() == false) {
 			catapultMotor = 127;

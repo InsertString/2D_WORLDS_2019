@@ -106,6 +106,8 @@ public:
   void setCatapultPower(int power);
 
   void setIntakePower(int power);
+  int loaded_ball_count;
+  int ball_count;
 
   //run this function in drive control
   void driveControl();
@@ -117,8 +119,6 @@ private:
 
   int intake_state();
   int intake_direction;
-  int loaded_ball_count;
-  int ball_count;
   int ball_count_toggle_var_1;
   int ball_count_toggle_var_2;
   int loaded_ball_check;
