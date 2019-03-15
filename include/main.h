@@ -82,8 +82,8 @@ extern pros::Motor intakeMotor;
 //sensor externs
 extern pros::ADIGyro gyro;
 extern pros::ADIAnalogIn intakeLight1Sensor;
-extern pros::ADIAnalogIn intakeLight2Sensor;
-extern pros::ADIDigitalIn catapultPot;
+extern pros::ADIAnalogIn catapultPot;
+extern pros::ADIDigitalIn catapultLimit;
 extern pros::ADIAnalogIn capScoringArmLimit;
 extern pros::ADIAnalogIn autonomousSelector;
 extern pros::Vision vision;

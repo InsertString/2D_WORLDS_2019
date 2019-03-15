@@ -79,6 +79,7 @@ private:
 class Ball_Systems {
 public:
 
+  //catapult macros
   #define TARGET 0
   #define LOAD 1
   #define FIRE 2
@@ -86,6 +87,19 @@ public:
   #define STATE 1
   #define LOADED 1
   #define NOT_LOADED 2
+  //~~~~~~~~~~~~//
+
+  //Intake macros
+  #define UP 1
+  #define DOWN 0
+
+  #define FULL 1
+  #define EMPTY 0
+  //~~~~~~~~~~~//
+
+
+
+
 
   Ball_Systems();
 
@@ -97,7 +111,17 @@ public:
   void driveControl();
 
 private:
+
   int catapult_data[2];
+
+
+  int intake_state();
+  int intake_direction;
+  int loaded_ball_count;
+  int ball_count;
+  int ball_count_toggle_var_1;
+  int ball_count_toggle_var_2;
+  int loaded_ball_check;
 };
 
 

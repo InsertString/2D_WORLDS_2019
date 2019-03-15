@@ -9,7 +9,7 @@ void opcontrol() {
 		chassis.driveControl();
 
 		pros::lcd::print(0, "cat pot = %d", catapultPot.get_value());
-
+/*
 		if (i == 1 && catapultPot.get_value() == false) {
 			catapultMotor = 127;
 		}
@@ -50,7 +50,7 @@ void opcontrol() {
 		else {
 			capScorerMotor = i;
 		}
-
+*/
 
 
 		pros::delay(20);
