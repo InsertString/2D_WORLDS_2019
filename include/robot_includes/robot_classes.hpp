@@ -59,7 +59,8 @@ private:
 
 
 
-class Ball_Systems {
+class Ball_Systems : public Base_System
+{
 public:
 
   //catapult macros
@@ -112,7 +113,8 @@ private:
 
 
 
-class Lift_Systems {
+class Lift_Systems : public Base_System
+{
 public:
 
   #define ZERO_ARM 0
