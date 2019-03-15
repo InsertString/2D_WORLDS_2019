@@ -5,6 +5,8 @@ void opcontrol() {
 	while (true) {
 		chassis.driveControl();
 		ball_system.driveControl();
+		lift_system.driveControl();
+
 
 		pros::lcd::print(0, "cat limit = %d", catapultLimit.get_value());
 		pros::lcd::print(1, "intake light = %d", intakeLight1Sensor.get_value());

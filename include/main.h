@@ -92,6 +92,7 @@ extern pros::Vision vision;
 //class externs
 extern Chassis_Systems chassis;
 extern Ball_Systems ball_system;
+extern Lift_Systems lift_system;
 extern PID drive_PID;
 extern PID turn_PID;
 extern PID hold_PID;
