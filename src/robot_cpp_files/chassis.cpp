@@ -71,17 +71,17 @@ void Chassis_Systems::driveControl() {
   if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
     left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
     drive_priority = DRIVING;
-		setLeft(left);
 		left_drive_hold_state = DRIVING;
   }
   else {
+			left = 0;
 		if (left_drive_hold_state == DRIVING) {
 			resetChassisSensors(false);
 			left_drive_hold_state = IDLE;
 			startTimer(LEFT_DRIVE_HOLD_TIMER);
 		}
 		else if (left_drive_hold_state == IDLE) {
-			left = 0;
+
 			left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
 		}
 		else if (left_drive_hold_state == HOLDING) {
@@ -97,16 +97,17 @@ void Chassis_Systems::driveControl() {
 	if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
 		right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
 		drive_priority = DRIVING;
-		setRight(right);
+		right_drive_hold_state = DRIVING;
 	}
 	else {
+		right = 0;
 		if (right_drive_hold_state == DRIVING) {
 			resetChassisSensors(false);
 			right_drive_hold_state = IDLE;
 			startTimer(RIGHT_DRIVE_HOLD_TIMER);
 		}
 		else if (right_drive_hold_state == IDLE) {
-			left = 0;
+
 			right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
 		}
 		else if (right_drive_hold_state == HOLDING) {
@@ -115,5 +116,7 @@ void Chassis_Systems::driveControl() {
 		}
   }
 
+	setRight(right);
+	setLeft(left);
 
 }

@@ -8,8 +8,8 @@ void opcontrol() {
 		lift_system.driveControl();
 
 
-		pros::lcd::print(0, "cat limit = %d", catapultLimit.get_value());
-		pros::lcd::print(1, "intake light = %d", intakeLight1Sensor.get_value());
+		pros::lcd::print(0, "arm limit = %d", capScoringArmLimit.get_value());
+		pros::lcd::print(1, "intake light = %d", intakeLight1Sensor.get_value_calibrated());
 		pros::lcd::print(2, "ball count = %d", ball_system.ball_count);
 		pros::lcd::print(3, "loaded ball count = %d", ball_system.loaded_ball_count);
 /*

@@ -39,7 +39,7 @@ void Ball_Systems::setCatapultPower(int power) {
 
 int Ball_Systems::intake_state() {
   int return_state;
-  return_state = (intakeLight1Sensor.get_value() < -100) ? FULL : EMPTY;
+  return_state = (intakeLight1Sensor.get_value_calibrated() < -0) ? FULL : EMPTY;
   return return_state;
 }
 
@@ -52,9 +52,9 @@ void Ball_Systems::driveControl() {
 
   //CATAPULT CODE//
 
-  catapult_data[STATE] = (catapultLimit.get_value() == true) ? LOADED : NOT_LOADED;
+  catapult_data[STATE] = (catapultLimit.get_value() == true && catapultPot.get_value() < 1200) ? LOADED : NOT_LOADED;
 
-  if (master.get_digital_new_press(DIGITAL_R1) && catapult_data[STATE] == LOADED) {
+  if (master.get_digital_new_press(DIGITAL_R1) && catapult_data[STATE] == LOADED && abs(loaded_ball_count) > 0) {
     catapult_data[TARGET] = FIRE;
     ball_count = intakeLight1Sensor.get_value() < -100 ? 1 : 0;
     loaded_ball_count = 0;
@@ -87,7 +87,7 @@ void Ball_Systems::driveControl() {
   if (catapult_data[STATE] == LOADED) {
 
     if (master.get_digital(DIGITAL_L1) || (master.get_digital(DIGITAL_R2) && intake_state() == EMPTY)) {
-      setIntakePower(127);
+      setIntakePower(100);
       intake_direction = UP;
     }
     else if (master.get_digital(DIGITAL_L2)) {
@@ -122,7 +122,7 @@ void Ball_Systems::driveControl() {
        of balls in the robot remains the same and the number of loaded
        balls decreases.
   */
-  if (intakeLight1Sensor.get_value() < -100) {
+  if (intake_state() == FULL) {
     for (; ball_count_toggle_var_1 < 1; ball_count_toggle_var_1++) {
       //this variable says that there is currently a ball detected.
       loaded_ball_check = 1;
@@ -150,7 +150,7 @@ void Ball_Systems::driveControl() {
   */
   if (loaded_ball_check == 1) {
     //checks for when the ball leaves sight of the line follower
-    if (intakeLight1Sensor.get_value() > -100) {
+    if (intake_state() == EMPTY) {
       for (; ball_count_toggle_var_2 < 1; ball_count_toggle_var_2++) {
         //checks the direction of the intake either up or down
         if (intake_direction == UP) {

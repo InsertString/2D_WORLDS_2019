@@ -24,7 +24,7 @@ pros::ADIGyro gyro(B);
 pros::ADIAnalogIn intakeLight1Sensor(E);
 pros::ADIAnalogIn catapultPot(D);
 pros::ADIDigitalIn catapultLimit(F);
-pros::ADIAnalogIn capScoringArmLimit(C);
+pros::ADIDigitalIn capScoringArmLimit(C);
 pros::ADIAnalogIn autonomousSelector(B);
 pros::Vision vision(VISION_PORT);
 

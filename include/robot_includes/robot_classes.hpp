@@ -127,8 +127,8 @@ class Lift_Systems {
 public:
 
   #define ZERO_ARM 0
-  #define HOLDING_CAP 500
-  #define SCORING_CAP 800
+  #define HOLDING_CAP 800
+  #define SCORING_CAP 2200
 
   Lift_Systems();
 
@@ -140,6 +140,7 @@ public:
 private:
   int cap_scoring_arm_target;
   int cap_scoring_arm_velocity;
+  int cap_scoring_arm_state;
 };
 
 #endif
