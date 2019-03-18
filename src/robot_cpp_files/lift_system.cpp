@@ -55,7 +55,7 @@ void Lift_Systems::driveControl() {
     }
     else {
       if (capScoringArmLimit.get_value() == false && cap_scoring_arm_state == 1) {
-        setCapScorerPower(-127);
+        setCapScorerPower(-50);
       }
       else {
         cap_scoring_arm_state = 0;

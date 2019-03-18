@@ -66,57 +66,88 @@ void Chassis_Systems::resetChassisSensors(bool reset_gyro) {
 
 void Chassis_Systems::driveControl() {
 
+	if (!master.get_digital(DIGITAL_Y)) {
 
-	//profiles the motor power to follow a more linear curve
-  if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
-    left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
-    drive_priority = DRIVING;
-		left_drive_hold_state = DRIVING;
-  }
-  else {
+		//profiles the motor power to follow a more linear curve
+	  if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
+	    left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
+	    drive_priority = DRIVING;
+			left_drive_hold_state = DRIVING;
+	  }
+	  else {
 			left = 0;
-		if (left_drive_hold_state == DRIVING) {
-			resetChassisSensors(false);
-			left_drive_hold_state = IDLE;
-			startTimer(LEFT_DRIVE_HOLD_TIMER);
+			if (left_drive_hold_state == DRIVING) {
+				resetChassisSensors(false);
+				left_drive_hold_state = IDLE;
+				startTimer(LEFT_DRIVE_HOLD_TIMER);
+			}
+			else if (left_drive_hold_state == IDLE) {
+
+				left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
+			}
+			else if (left_drive_hold_state == HOLDING) {
+			//	frontLeftDriveMotor.move_absolute(0, 50);
+			//	backLeftDriveMotor.move_absolute(0, 50);
+			}
+	  }
+
+
+
+
+		//profiles the motor power to follow a more linear curve
+		if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
+			right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
+			drive_priority = DRIVING;
+			right_drive_hold_state = DRIVING;
 		}
-		else if (left_drive_hold_state == IDLE) {
+		else {
+			right = 0;
+			if (right_drive_hold_state == DRIVING) {
+				resetChassisSensors(false);
+				right_drive_hold_state = IDLE;
+				startTimer(RIGHT_DRIVE_HOLD_TIMER);
+			}
+			else if (right_drive_hold_state == IDLE) {
 
-			left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
-		}
-		else if (left_drive_hold_state == HOLDING) {
-		//	frontLeftDriveMotor.move_absolute(0, 50);
-		//	backLeftDriveMotor.move_absolute(0, 50);
-		}
-  }
+				right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
+			}
+			else if (right_drive_hold_state == HOLDING) {
+			//	frontRightDriveMotor.move_absolute(0, 50);
+			//	backRightDriveMotor.move_absolute(0, 50);
+			}
+	  }
 
-
-
-
-	//profiles the motor power to follow a more linear curve
-	if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
-		right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
-		drive_priority = DRIVING;
-		right_drive_hold_state = DRIVING;
+		setRight(right);
+		setLeft(left);
 	}
-	else {
-		right = 0;
-		if (right_drive_hold_state == DRIVING) {
-			resetChassisSensors(false);
-			right_drive_hold_state = IDLE;
-			startTimer(RIGHT_DRIVE_HOLD_TIMER);
-		}
-		else if (right_drive_hold_state == IDLE) {
 
-			right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
-		}
-		else if (right_drive_hold_state == HOLDING) {
-		//	frontRightDriveMotor.move_absolute(0, 50);
-		//	backRightDriveMotor.move_absolute(0, 50);
-		}
-  }
+	pros::vision_object_s_t flag = vision.get_by_sig(0, 2);
 
-	setRight(right);
-	setLeft(left);
+
+	//printf("obj_x = %d obj_y = %d\n", flag.x_middle_coord, flag.y_middle_coord);
+
+
+	if (master.get_digital(DIGITAL_Y)) {
+		if (flag.x_middle_coord > 5 && flag.x_middle_coord < 55) {
+			chassis.setLeft(20);
+			chassis.setRight(-20);
+		}
+		else if (flag.x_middle_coord < -5 && flag.x_middle_coord > -55) {
+			chassis.setLeft(-20);
+			chassis.setRight(20);
+		}
+		else if (flag.x_middle_coord >= 55) {
+			chassis.setLeft(40);
+			chassis.setRight(-40);
+		}
+		else if (flag.x_middle_coord <= -55) {
+			chassis.setLeft(-40);
+			chassis.setRight(40);
+		}
+		else {
+			chassis.setLeft(0);
+			chassis.setRight(0);
+		}
+	}
 
 }

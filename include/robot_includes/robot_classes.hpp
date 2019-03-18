@@ -4,6 +4,17 @@
 
 
 
+
+class Vision_Control {
+public:
+  void driveControl();
+};
+
+
+
+
+
+
 class Chassis_Systems {
 public:
   Chassis_Systems();
@@ -31,7 +42,8 @@ public:
   void setDriveTarget(int target);
   void setTurnTarget(int target);
 
-
+  void setLeft(int power);
+  void setRight(int power);
 
 
   /*driveControl
@@ -41,12 +53,16 @@ public:
   */
   void driveControl();
   void resetChassisSensors(bool reset_gyro);
+  void requestDrivePriority(int system);
 
 private:
   #define DRIVE_THRESHOLD 10
+  #define DRIVE_PRIORITY_CHASSIS 1
+  #define DRIVE_PRIORITY_LIFT 2
+  #define DRIVE_PRIORITY_BALLS 3
+  #define DRIVE_PRIORITY_VISION 4
 
-  void setLeft(int power);
-  void setRight(int power);
+
 
 
   //drive priority to prioritise driving, turning, or holding power
@@ -61,6 +77,9 @@ private:
 
   int left_drive_hold_state;
   int right_drive_hold_state;
+
+  int drive_system_priority;
+  int drive_system_request;
 };
 
 
