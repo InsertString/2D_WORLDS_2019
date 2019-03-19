@@ -62,12 +62,35 @@ void Chassis_Systems::resetChassisSensors(bool reset_gyro) {
 
 
 
+void Chassis_Systems::requestDrivePriority(int class_system) {
+	drive_system_request = class_system;
+}
+
+
+
+
+
+void Chassis_Systems::request_left(int power) {
+	left = power;
+}
+
+
+
+
+
+void Chassis_Systems::request_right(int power) {
+	right = power;
+}
+
+
+
+
 
 
 void Chassis_Systems::driveControl() {
 
-	if (!master.get_digital(DIGITAL_Y)) {
 
+	if (drive_system_priority == DRIVE_PRIORITY_CHASSIS) {
 		//profiles the motor power to follow a more linear curve
 	  if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
 	    left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
@@ -84,10 +107,6 @@ void Chassis_Systems::driveControl() {
 			else if (left_drive_hold_state == IDLE) {
 
 				left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
-			}
-			else if (left_drive_hold_state == HOLDING) {
-			//	frontLeftDriveMotor.move_absolute(0, 50);
-			//	backLeftDriveMotor.move_absolute(0, 50);
 			}
 	  }
 
@@ -111,43 +130,23 @@ void Chassis_Systems::driveControl() {
 
 				right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
 			}
-			else if (right_drive_hold_state == HOLDING) {
-			//	frontRightDriveMotor.move_absolute(0, 50);
-			//	backRightDriveMotor.move_absolute(0, 50);
-			}
 	  }
-
-		setRight(right);
-		setLeft(left);
 	}
 
-	pros::vision_object_s_t flag = vision.get_by_sig(0, 2);
 
 
-	//printf("obj_x = %d obj_y = %d\n", flag.x_middle_coord, flag.y_middle_coord);
-
-
-	if (master.get_digital(DIGITAL_Y)) {
-		if (flag.x_middle_coord > 5 && flag.x_middle_coord < 55) {
-			chassis.setLeft(20);
-			chassis.setRight(-20);
-		}
-		else if (flag.x_middle_coord < -5 && flag.x_middle_coord > -55) {
-			chassis.setLeft(-20);
-			chassis.setRight(20);
-		}
-		else if (flag.x_middle_coord >= 55) {
-			chassis.setLeft(40);
-			chassis.setRight(-40);
-		}
-		else if (flag.x_middle_coord <= -55) {
-			chassis.setLeft(-40);
-			chassis.setRight(40);
-		}
-		else {
-			chassis.setLeft(0);
-			chassis.setRight(0);
-		}
+	if ((abs(master.get_analog(ANALOG_RIGHT_Y)) < DRIVE_THRESHOLD) && (abs(master.get_analog(ANALOG_LEFT_Y)) < DRIVE_THRESHOLD)) {
+		drive_system_priority = drive_system_request;
+	}
+	else {
+		drive_system_priority = DRIVE_PRIORITY_CHASSIS;
+		drive_system_request = DRIVE_PRIORITY_CHASSIS;
 	}
 
+
+
+
+
+	setRight(right);
+	setLeft(left);
 }

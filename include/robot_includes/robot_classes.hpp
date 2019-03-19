@@ -53,7 +53,12 @@ public:
   */
   void driveControl();
   void resetChassisSensors(bool reset_gyro);
-  void requestDrivePriority(int system);
+
+
+  //chassis priority so that other classes can access the drive//
+  void requestDrivePriority(int class_system);
+  void request_left(int power);
+  void request_right(int power);
 
 private:
   #define DRIVE_THRESHOLD 10
