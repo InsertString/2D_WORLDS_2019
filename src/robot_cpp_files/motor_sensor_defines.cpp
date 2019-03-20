@@ -35,7 +35,9 @@ pros::Vision vision(VISION_PORT);
 Chassis_Systems chassis;
 Ball_Systems ball_system;
 Lift_Systems lift_system;
+Vision_Control vision_system;
 
 PID drive_PID;
 PID turn_PID;
 PID hold_PID;
+PID vision_PID;

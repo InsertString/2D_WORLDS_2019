@@ -3,46 +3,10 @@
 void opcontrol() {
 
 	while (true) {
-/*
-		pros::vision_object_s_t flag = vision.get_by_sig(0, 2);
-
-
-		printf("obj_x = %d obj_y = %d\n", flag.x_middle_coord, flag.y_middle_coord);
-
-
-		if (master.get_digital(DIGITAL_Y)) {
-			if (flag.x_middle_coord > 5 && flag.x_middle_coord < 55) {
-				chassis.setLeft(20);
-				chassis.setRight(-20);
-			}
-			else if (flag.x_middle_coord < -5 && flag.x_middle_coord > -55) {
-				chassis.setLeft(-20);
-				chassis.setRight(20);
-			}
-			else if (flag.x_middle_coord >= 55) {
-				chassis.setLeft(40);
-				chassis.setRight(-40);
-			}
-			else if (flag.x_middle_coord <= -55) {
-				chassis.setLeft(-40);
-				chassis.setRight(40);
-			}
-			else {
-				chassis.setLeft(0);
-				chassis.setRight(0);
-			}
-		}
-		else {
-			chassis.setLeft(0);
-			chassis.setRight(0);
-		}
-
-
-*/
-
-
+		
 		ball_system.driveControl();
 		lift_system.driveControl();
+		vision_system.driveControl();
 		chassis.driveControl();
 
 

@@ -3,11 +3,16 @@
 
 
 
-
-
 class Vision_Control {
 public:
+  #define VISION_BLUE 1
+  #define VISION_RED 2
+
+  Vision_Control();
+
   void driveControl();
+private:
+  int target_colour;
 };
 
 

@@ -64,7 +64,7 @@ void Ball_Systems::driveControl() {
 
   if (catapult_data[TARGET] == FIRE) {
     if (catapult_data[STATE] == LOADED) {
-      setCatapultPower(127);
+      setCatapultPower(90);
     }
     else {
       setCatapultPower(0);
