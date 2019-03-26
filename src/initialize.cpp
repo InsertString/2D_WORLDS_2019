@@ -1,5 +1,9 @@
 #include "main.h"
 
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Controller partner(pros::E_CONTROLLER_PARTNER);
+
+
 void initialize() {
 	//initialise lcd display
 	pros::lcd::initialize();
@@ -15,6 +19,10 @@ void initialize() {
 
 	//calibrate the light sensors
 	intakeLight1Sensor.calibrate();
+
+
+	capFlipperMotor.tare_position();
+	capFlipperMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 }
 
 void disabled() {}

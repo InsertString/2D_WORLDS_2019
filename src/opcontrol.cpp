@@ -2,12 +2,18 @@
 
 void opcontrol() {
 
+
+
 	while (true) {
-		
+
 		ball_system.driveControl();
 		lift_system.driveControl();
 		vision_system.driveControl();
 		chassis.driveControl();
+		//*/
+
+
+
 
 
 		pros::lcd::print(0, "arm limit = %d", capScoringArmLimit.get_value());

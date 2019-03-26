@@ -65,6 +65,11 @@ public:
   void request_left(int power);
   void request_right(int power);
 
+
+
+
+  int drive_system_priority;
+
 private:
   #define DRIVE_THRESHOLD 10
   #define DRIVE_PRIORITY_CHASSIS 1
@@ -88,7 +93,7 @@ private:
   int left_drive_hold_state;
   int right_drive_hold_state;
 
-  int drive_system_priority;
+
   int drive_system_request;
 };
 
@@ -170,6 +175,9 @@ private:
   int cap_scoring_arm_target;
   int cap_scoring_arm_velocity;
   int cap_scoring_arm_state;
+  int arm_position;
+	int flipper_position;
+	int flipper_power;
 };
 
 #endif

@@ -64,7 +64,7 @@ void Ball_Systems::driveControl() {
 
   if (catapult_data[TARGET] == FIRE) {
     if (catapult_data[STATE] == LOADED) {
-      setCatapultPower(90);
+      setCatapultPower(127);
     }
     else {
       setCatapultPower(0);
@@ -87,7 +87,7 @@ void Ball_Systems::driveControl() {
   if (catapult_data[STATE] == LOADED) {
 
     if (master.get_digital(DIGITAL_L1) || (master.get_digital(DIGITAL_R2) && intake_state() == EMPTY)) {
-      setIntakePower(100);
+      setIntakePower(127);
       intake_direction = UP;
     }
     else if (master.get_digital(DIGITAL_L2)) {
