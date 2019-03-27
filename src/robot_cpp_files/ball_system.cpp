@@ -86,7 +86,7 @@ void Ball_Systems::driveControl() {
 
   if (catapult_data[STATE] == LOADED) {
 
-    if (master.get_digital(DIGITAL_L1) || (master.get_digital(DIGITAL_R2) && intake_state() == EMPTY)) {
+    if (master.get_digital(DIGITAL_L1)) {
       setIntakePower(127);
       intake_direction = UP;
     }

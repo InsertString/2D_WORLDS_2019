@@ -38,7 +38,7 @@ void Vision_Control::driveControl() {
 
 
 
-  if (master.get_digital(DIGITAL_DOWN)) {
+  if (master.get_digital(DIGITAL_R2)) {
     int power_left;
     int power_right;
 

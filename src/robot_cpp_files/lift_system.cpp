@@ -52,20 +52,27 @@ void Lift_Systems::driveControl() {
 
 	if (abs(partner.get_analog(ANALOG_RIGHT_Y)) > 20) {
 
-		flipper_power = partner.get_analog(ANALOG_RIGHT_Y);
+    if (partner.get_analog(ANALOG_RIGHT_Y) > 0 && capFlipperLimit.get_value() == true) {
+      capFlipperMotor = 0;
+    }
+    else {
+      flipper_power = partner.get_analog(ANALOG_RIGHT_Y);
 
-		if (flipper_power > 100) {
-			flipper_power = 100;
-		}
-		else if (flipper_power < -30) {
-			flipper_power = -30;
-		}
+  		if (flipper_power > 100) {
+  			flipper_power = 100;
+  		}
+  		else if (flipper_power < -30) {
+  			flipper_power = -30;
+  		}
 
-		capFlipperMotor = flipper_power;
+  		capFlipperMotor = flipper_power;
+    }
+
+
 		flipper_position = capFlipperMotor.get_position();
 	}
 	else {
-		capFlipperMotor.move_absolute(flipper_position, 50);
+		capFlipperMotor.move_absolute(flipper_position, 20);
 	}
 
 }

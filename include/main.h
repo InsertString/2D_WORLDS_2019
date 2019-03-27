@@ -27,6 +27,8 @@
 #define D 4
 #define E 5
 #define F 6
+#define G 7
+#define H 8
 //~~~~~~~~~~~//
 
 
@@ -87,6 +89,7 @@ extern pros::ADIDigitalIn catapultLimit;
 extern pros::ADIDigitalIn capScoringArmLimit;
 extern pros::ADIAnalogIn autonomousSelector;
 extern pros::Vision vision;
+extern pros::ADIDigitalIn capFlipperLimit;
 
 
 //class externs
