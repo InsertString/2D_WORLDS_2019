@@ -7,6 +7,18 @@ Chassis_Systems::Chassis_Systems() {
 	drive_priority = IDLE;
 	drive_target = 0;
 	turn_target = 0;
+	left_drive_hold_state = IDLE;
+	right_drive_hold_state = IDLE;
+	left = 0;
+	right = 0;
+
+
+	l_d_h_PID.set_PID_vars(0, 0, 0, 0);
+	l_d_h_PID.target = 0;
+
+	r_d_h_PID.set_PID_vars(0, 0, 0, 0);
+	r_d_h_PID.target = 0;
+
 }
 
 
@@ -98,15 +110,11 @@ void Chassis_Systems::driveControl() {
 			left_drive_hold_state = DRIVING;
 	  }
 	  else {
-			left = 0;
 			if (left_drive_hold_state == DRIVING) {
+				left = 0;
 				resetChassisSensors(false);
 				left_drive_hold_state = IDLE;
 				startTimer(LEFT_DRIVE_HOLD_TIMER);
-			}
-			else if (left_drive_hold_state == IDLE) {
-
-				left_drive_hold_state = (getTime(LEFT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
 			}
 	  }
 
@@ -120,17 +128,35 @@ void Chassis_Systems::driveControl() {
 			right_drive_hold_state = DRIVING;
 		}
 		else {
-			right = 0;
 			if (right_drive_hold_state == DRIVING) {
+				right = 0;
 				resetChassisSensors(false);
 				right_drive_hold_state = IDLE;
 				startTimer(RIGHT_DRIVE_HOLD_TIMER);
 			}
-			else if (right_drive_hold_state == IDLE) {
-
-				right_drive_hold_state = (getTime(RIGHT_DRIVE_HOLD_TIMER) > 100) ? HOLDING : IDLE;
-			}
 	  }
+
+
+
+		if (master.get_digital_new_press(DIGITAL_B) && right_drive_hold_state == IDLE && left_drive_hold_state == IDLE) {
+			right_drive_hold_state = HOLDING;
+			left_drive_hold_state = HOLDING;
+		}
+
+
+
+
+		if (left_drive_hold_state == HOLDING) {
+			l_d_h_PID.current = frontLeftDriveMotor.get_position();
+			left = l_d_h_PID.output(30);
+		}
+
+
+
+		if (right_drive_hold_state == HOLDING) {
+			r_d_h_PID.current = frontRightDriveMotor.get_position();
+			right = r_d_h_PID.output(30);
+		}
 	}
 
 

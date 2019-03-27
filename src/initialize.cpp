@@ -40,7 +40,8 @@ Vision_Control vision_system;
 
 PID drive_PID;
 PID turn_PID;
-PID hold_PID;
+PID l_d_h_PID;
+PID r_d_h_PID;
 PID vision_PID;
 
 
