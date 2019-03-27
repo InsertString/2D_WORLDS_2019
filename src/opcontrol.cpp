@@ -10,11 +10,6 @@ void opcontrol() {
 		lift_system.driveControl();
 		vision_system.driveControl();
 		chassis.driveControl();
-		//*/
-
-
-
-
 
 		pros::lcd::print(0, "arm limit = %d", capScoringArmLimit.get_value());
 		pros::lcd::print(1, "intake light = %d", intakeLight1Sensor.get_value_calibrated());

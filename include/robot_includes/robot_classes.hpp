@@ -7,12 +7,14 @@ class Vision_Control {
 public:
   #define VISION_BLUE 1
   #define VISION_RED 2
+  #define VISION_GREEN 3
 
   Vision_Control();
 
   void driveControl();
 private:
   int target_colour;
+  int on_target;
 };
 
 
