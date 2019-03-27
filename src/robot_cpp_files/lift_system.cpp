@@ -70,11 +70,11 @@ void Lift_Systems::driveControl() {
   */
   if (abs(partner.get_analog(ANALOG_LEFT_Y)) > 20) {
 
-    if (partner.get_analog(ANALOG_LEFT_Y) < 0 && capScoringArmLimit.get_value() == true) {
+    if (partner.get_analog(ANALOG_LEFT_Y) > 0 && capScoringArmLimit.get_value() == true) {
       capScorerMotor = 0;
     }
     else {
-      capScorerMotor = partner.get_analog(ANALOG_LEFT_Y);
+      capScorerMotor = -partner.get_analog(ANALOG_LEFT_Y);
     }
 
     arm_position = capScorerMotor.get_position();
