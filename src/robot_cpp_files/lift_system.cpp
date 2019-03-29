@@ -26,7 +26,7 @@ void Lift_Systems::setCapScorerPower(int power) {
 
 
 
-
+int ww;
 
 void Lift_Systems::driveControl() {
 
@@ -47,32 +47,44 @@ void Lift_Systems::driveControl() {
 
 
 
-
-
-
-	if (abs(partner.get_analog(ANALOG_RIGHT_Y)) > 20) {
-
-    if (partner.get_analog(ANALOG_RIGHT_Y) > 0 && capFlipperLimit.get_value() == true) {
-      capFlipperMotor = 0;
-    }
-    else {
+  if (partner.get_analog(ANALOG_RIGHT_Y) > 20) {
+    if (capFlipperLimit.get_value() == false) {
       flipper_power = partner.get_analog(ANALOG_RIGHT_Y);
 
-  		if (flipper_power > 100) {
-  			flipper_power = 100;
-  		}
-  		else if (flipper_power < -30) {
-  			flipper_power = -30;
-  		}
+      if (fabs(capFlipperMotor.get_position()) < 150) {
+        flipper_power = flipper_power > 40 ? 40 : flipper_power;
+      }
+      
 
-  		capFlipperMotor = flipper_power;
+      capFlipperMotor = flipper_power;
+      flipper_position = capFlipperMotor.get_position();
+      ww = 0;
     }
-
-
-		flipper_position = capFlipperMotor.get_position();
-	}
-	else {
-		capFlipperMotor.move_absolute(flipper_position, 20);
-	}
+    else if (capFlipperLimit.get_value() == true) {
+      if (ww == 0) {
+        capFlipperMotor.tare_position();
+        ww = 1;
+      }
+      capFlipperMotor.move_absolute(0, 200);
+    }
+  }
+  else if (partner.get_analog(ANALOG_RIGHT_Y) < -20) {
+    flipper_power = partner.get_analog(ANALOG_RIGHT_Y);
+    flipper_power = flipper_power < -60 ? -60 : flipper_power;
+    capFlipperMotor = flipper_power;
+    flipper_position = capFlipperMotor.get_position();
+  }
+  else {
+    if (capFlipperLimit.get_value() == true) {
+      if (ww == 0) {
+        capFlipperMotor.tare_position();
+        ww = 1;
+      }
+      capFlipperMotor.move_absolute(0, 200);
+    }
+    else {
+      capFlipperMotor.move_absolute(flipper_position, 20);
+    }
+  }
 
 }

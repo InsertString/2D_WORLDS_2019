@@ -32,8 +32,8 @@ void Vision_Control::driveControl() {
 
 
   //target colour swapper
-  if (master.get_digital_new_press(DIGITAL_UP)) {
-    target_colour = target_colour == VISION_GREEN ? VISION_BLUE : target_colour == VISION_RED ? VISION_GREEN : VISION_BLUE;
+  if (master.get_digital_new_press(DIGITAL_Y)) {
+    target_colour = target_colour == VISION_GREEN ? VISION_BLUE : target_colour == VISION_RED ? VISION_GREEN : target_colour == VISION_BLUE ? VISION_RED : target_colour;
   }
 
 
