@@ -4,5 +4,6 @@
 #include "robot_classes.hpp"
 #include "pid.hpp"
 #include "timing.hpp"
+#include "auto_functions.hpp"
 
 #endif
