@@ -60,7 +60,7 @@ void Vision_Control::driveControl() {
     if (abs(flag.x_middle_coord) < 10) {
       //only rumble once
       if (on_target == 0) {
-        master.rumble("- - -");
+        master.rumble("-");
       }
       on_target = 1;
     }
