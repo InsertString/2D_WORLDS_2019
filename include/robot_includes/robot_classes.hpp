@@ -31,23 +31,7 @@ public:
   #define TURNING 2
   #define HOLDING 3
 
-  /*autoChassisPID//
-  -when driving, the gyro will constatly reset
-  -when turning the encoders will constantly reset
 
-  -when you set the drive target, it will drive to the desired value
-   then stop and hold power until the value is changed
-  -setting the dive target will reset the gyro target to 0
-   and set the drive priority to driving
-
-  -when you set the turn target, it will turn to the desired value
-   then stop and hold power until the value is changed
-  -setting the turn target will reset the drive encoders to 0
-  and set the drive priority to turning
-  */
-  void autoChassisPID();
-  void setDriveTarget(int target);
-  void setTurnTarget(int target);
 
   void setLeft(int power);
   void setRight(int power);
@@ -68,6 +52,8 @@ public:
   void request_right(int power);
 
 
+  double right_encoder_val();
+//  float left_encoder_val();
 
 
   int drive_system_priority;

@@ -42,8 +42,13 @@ Ball_Systems ball_system;
 Lift_Systems lift_system;
 Vision_Control vision_system;
 
-PID drive_PID;
-PID turn_PID;
+PID auto_drive_PID;
+PID auto_gyro_correction_PID;
+
+PID auto_turn_PID;
+
+PID auto_vision_PID;
+
 PID l_d_h_PID;
 PID r_d_h_PID;
 PID vision_PID;

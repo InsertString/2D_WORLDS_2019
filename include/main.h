@@ -97,8 +97,18 @@ extern Chassis_Systems chassis;
 extern Ball_Systems ball_system;
 extern Lift_Systems lift_system;
 extern Vision_Control vision_system;
-extern PID drive_PID;
-extern PID turn_PID;
+
+//auto PIDS
+extern PID auto_drive_PID;
+extern PID auto_gyro_correction_PID;
+
+extern PID auto_turn_PID;
+
+extern PID auto_vision_PID;
+
+
+
+//drive control PIDS
 extern PID l_d_h_PID;
 extern PID r_d_h_PID;
 extern PID vision_PID;

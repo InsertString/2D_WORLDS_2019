@@ -98,6 +98,14 @@ void Chassis_Systems::request_right(int power) {
 
 
 
+double Chassis_Systems::right_encoder_val() {
+	return frontRightDriveMotor.get_position();
+}
+
+
+
+
+
 
 void Chassis_Systems::driveControl() {
 
@@ -114,7 +122,6 @@ void Chassis_Systems::driveControl() {
 				left = 0;
 				resetChassisSensors(false);
 				left_drive_hold_state = IDLE;
-				startTimer(LEFT_DRIVE_HOLD_TIMER);
 			}
 	  }
 
@@ -132,7 +139,6 @@ void Chassis_Systems::driveControl() {
 				right = 0;
 				resetChassisSensors(false);
 				right_drive_hold_state = IDLE;
-				startTimer(RIGHT_DRIVE_HOLD_TIMER);
 			}
 	  }
 

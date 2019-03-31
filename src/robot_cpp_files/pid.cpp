@@ -55,6 +55,14 @@ void PID::post(int data_slot) {
 
 
 
+int PID::error() {
+  return data[ERROR];
+}
+
+
+
+
+
 int PID::output(int max_power) {
   //create output variable
   int out;
