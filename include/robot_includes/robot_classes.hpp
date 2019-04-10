@@ -147,7 +147,7 @@ private:
 
 class Lift_Systems {
 public:
-  
+
 
   Lift_Systems();
 
@@ -160,6 +160,7 @@ private:
   int flipper_target;
   int flipper_velocity;
 
+  int scoring;
   int scorer_target;
   int scorer_velocity;
 };
