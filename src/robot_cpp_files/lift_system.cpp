@@ -51,20 +51,19 @@ void Lift_Systems::driveControl() {
 
   capFlipperMotor.move_absolute(flipper_target, flipper_velocity);
 
- if (master.get_digital_new_press(DIGITAL_B)) {
-   scorer_target = 0;
-   scorer_velocity = 200;
-   scoring = false;
- }
- else if (master.get_digital_new_press(DIGITAL_A)) {
-   scorer_target = 750;
-   scorer_velocity = 150;
-   scoring = false;
- }
- else if (master.get_digital_new_press(DIGITAL_X)) {
-   scoring = true;
- }
-
+  if (master.get_digital_new_press(DIGITAL_B)) {
+    scorer_target = 0;
+    scorer_velocity = 200;
+    scoring = false;
+  }
+  else if (master.get_digital_new_press(DIGITAL_A)) {
+    scorer_target = 750;
+    scorer_velocity = 150;
+    scoring = false;
+  }
+  else if (master.get_digital_new_press(DIGITAL_X)) {
+    scoring = true;
+  }
 
   if (scoring == true && capScorerMotor.get_position() < 1850) {
     scorer_target = 1900;
@@ -72,11 +71,14 @@ void Lift_Systems::driveControl() {
   }
   else if (scoring == true && capScorerMotor.get_position() > 1850) {
     scorer_target = 0;
-    scorer_velocity = 150;
+    scorer_velocity = 200;
     scoring = false;
   }
 
  capScorerMotor.move_absolute(scorer_target, scorer_velocity);
 
+ if (capScoringArmLimit.get_value() == true) {
+   capScorerMotor.tare_position();
+ }
 
 }
