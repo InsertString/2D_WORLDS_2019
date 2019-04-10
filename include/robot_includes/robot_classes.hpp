@@ -147,10 +147,7 @@ private:
 
 class Lift_Systems {
 public:
-
-  #define ZERO_ARM 0
-  #define HOLDING_CAP 800
-  #define SCORING_CAP 2200
+  
 
   Lift_Systems();
 
@@ -160,12 +157,11 @@ public:
   void driveControl();
 
 private:
-  int cap_scoring_arm_target;
-  int cap_scoring_arm_velocity;
-  int cap_scoring_arm_state;
-  int arm_position;
-	int flipper_position;
-	int flipper_power;
+  int flipper_target;
+  int flipper_velocity;
+
+  int scorer_target;
+  int scorer_velocity;
 };
 
 #endif

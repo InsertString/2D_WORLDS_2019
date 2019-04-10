@@ -54,7 +54,8 @@ void Ball_Systems::driveControl() {
 
   catapult_data[STATE] = (catapultLimit.get_value() == true && catapultPot.get_value() < 1200) ? LOADED : NOT_LOADED;
 
-  if ((master.get_digital_new_press(DIGITAL_R1) && catapult_data[STATE] == LOADED && abs(loaded_ball_count) > 0) || (master.get_digital_new_press(DIGITAL_UP))) {
+//  if ((master.get_digital_new_press(DIGITAL_R1) && catapult_data[STATE] == LOADED && abs(loaded_ball_count) > 0) || (master.get_digital_new_press(DIGITAL_UP))) {
+  if (master.get_digital_new_press(DIGITAL_R1)) {
     catapult_data[TARGET] = FIRE;
     ball_count = intakeLight1Sensor.get_value() < -100 ? 1 : 0;
     loaded_ball_count = 0;

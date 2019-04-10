@@ -13,10 +13,10 @@ Chassis_Systems::Chassis_Systems() {
 	right = 0;
 
 
-	l_d_h_PID.set_PID_vars(0, 0, 0, 0);
+	l_d_h_PID.set_PID_vars(5, 0, 0, 0);
 	l_d_h_PID.target = 0;
 
-	r_d_h_PID.set_PID_vars(0, 0, 0, 0);
+	r_d_h_PID.set_PID_vars(5, 0, 0, 0);
 	r_d_h_PID.target = 0;
 
 }
@@ -144,25 +144,15 @@ void Chassis_Systems::driveControl() {
 
 
 
-		if (master.get_digital_new_press(DIGITAL_B) && right_drive_hold_state == IDLE && left_drive_hold_state == IDLE) {
+		if (master.get_digital(DIGITAL_Y)) {
 			right_drive_hold_state = HOLDING;
 			left_drive_hold_state = HOLDING;
-		}
-
-
-
-
-		if (left_drive_hold_state == HOLDING) {
 			l_d_h_PID.current = frontLeftDriveMotor.get_position();
-			left = l_d_h_PID.output(30);
-		}
-
-
-
-		if (right_drive_hold_state == HOLDING) {
+			left = l_d_h_PID.output(127);
 			r_d_h_PID.current = frontRightDriveMotor.get_position();
-			right = r_d_h_PID.output(30);
+			right = r_d_h_PID.output(127);
 		}
+
 	}
 
 

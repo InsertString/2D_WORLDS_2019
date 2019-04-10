@@ -118,4 +118,21 @@ extern PID vision_PID;
 
 
 
+
+extern Auto_Action placeholder_1;
+extern Auto_Action placeholder_2;
+extern Auto_Action placeholder_3;
+
+extern int auto_step;
+extern int auto_drive_step;
+extern int auto_turn_step;
+extern int auto_turn_vision_step;
+extern int auto_shoot_step;
+extern int auto_move_arm_step;
+extern int auto_move_flipper_step;
+
+
+
+
+
 #endif  // _PROS_MAIN_H_

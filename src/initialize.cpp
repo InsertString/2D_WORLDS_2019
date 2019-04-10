@@ -4,7 +4,6 @@
 
 //controllers
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 //~~~~~~~~//
 
 
@@ -72,6 +71,7 @@ void initialize() {
 
 
 	capFlipperMotor.tare_position();
+	capFlipperMotor.set_gearing(MOTOR_GEARSET_36);
 	capFlipperMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 

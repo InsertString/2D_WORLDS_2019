@@ -1,20 +1,22 @@
 #include "main.h"
 #include "robot_includes/robot_includes.hpp"
 
+#define TOP 0
+#define FRONT_FLIP -450
+#define BACK_FLIP -550
 
 Lift_Systems::Lift_Systems() {
-  cap_scoring_arm_state = 1;
-  cap_scoring_arm_velocity = 100;
-  cap_scoring_arm_target = ZERO_ARM;
-  arm_position = 0;
-  flipper_power = 0;
+  flipper_target = TOP;
+  flipper_velocity = 20;
+  scorer_target = 0;
+  scorer_velocity = 50;
 }
 
 
 
 
 void Lift_Systems::setFlipperPower(int power) {
-  capFlipperMotor = power;
+  capFlipperMotor = -power;
 }
 
 
@@ -26,65 +28,41 @@ void Lift_Systems::setCapScorerPower(int power) {
 
 
 
-int ww;
 
 void Lift_Systems::driveControl() {
 
-  if (abs(partner.get_analog(ANALOG_LEFT_Y)) > 20) {
-
-    if (partner.get_analog(ANALOG_LEFT_Y) > 0 && capScoringArmLimit.get_value() == true) {
-      capScorerMotor = 0;
-    }
-    else {
-      capScorerMotor = -partner.get_analog(ANALOG_LEFT_Y);
-    }
-
-    arm_position = capScorerMotor.get_position();
-  }
-  else {
-    capScorerMotor.move_absolute(arm_position, 20);
-  }
-
-
-
-  if (partner.get_analog(ANALOG_RIGHT_Y) > 20) {
-    if (capFlipperLimit.get_value() == false) {
-      flipper_power = partner.get_analog(ANALOG_RIGHT_Y);
-
-      if (fabs(capFlipperMotor.get_position()) < 150) {
-        flipper_power = flipper_power > 40 ? 40 : flipper_power;
-      }
-      
-
-      capFlipperMotor = flipper_power;
-      flipper_position = capFlipperMotor.get_position();
-      ww = 0;
-    }
-    else if (capFlipperLimit.get_value() == true) {
-      if (ww == 0) {
-        capFlipperMotor.tare_position();
-        ww = 1;
-      }
-      capFlipperMotor.move_absolute(0, 200);
+  if (master.get_digital_new_press(DIGITAL_R2)) {
+    switch (flipper_target) {
+      case TOP :
+      flipper_target = FRONT_FLIP;
+      flipper_velocity = 50;
+      break;
+      case FRONT_FLIP :
+      flipper_target = BACK_FLIP;
+      flipper_velocity = 50;
+      break;
+      case BACK_FLIP :
+      flipper_target = TOP;
+      flipper_velocity = 90;
+      break;
     }
   }
-  else if (partner.get_analog(ANALOG_RIGHT_Y) < -20) {
-    flipper_power = partner.get_analog(ANALOG_RIGHT_Y);
-    flipper_power = flipper_power < -60 ? -60 : flipper_power;
-    capFlipperMotor = flipper_power;
-    flipper_position = capFlipperMotor.get_position();
-  }
-  else {
-    if (capFlipperLimit.get_value() == true) {
-      if (ww == 0) {
-        capFlipperMotor.tare_position();
-        ww = 1;
-      }
-      capFlipperMotor.move_absolute(0, 200);
-    }
-    else {
-      capFlipperMotor.move_absolute(flipper_position, 20);
-    }
-  }
+
+  capFlipperMotor.move_absolute(flipper_target, flipper_velocity);
+
+ if (master.get_digital_new_press(DIGITAL_B)) {
+   scorer_target = 0;
+   scorer_velocity = 200;
+ }
+ else if (master.get_digital_new_press(DIGITAL_A)) {
+   scorer_target = 750;
+   scorer_velocity = 150;
+ }
+ else if (master.get_digital_new_press(DIGITAL_X)) {
+   scorer_target = 1900;
+   scorer_velocity = 200;
+ }
+
+ capScorerMotor.move_absolute(scorer_target, scorer_velocity);
 
 }

@@ -37,7 +37,7 @@ void Vision_Control::driveControl() {
   }
 
 
-
+/*
   if (master.get_digital(DIGITAL_R2)) {
     int power_left;
     int power_right;
@@ -73,5 +73,6 @@ void Vision_Control::driveControl() {
       chassis.request_left(0);
       chassis.request_right(0);
     }
-  }
+  }*/
+
 }
