@@ -114,7 +114,6 @@ void Chassis_Systems::driveControl() {
 		//profiles the motor power to follow a more linear curve
 	  if (abs(master.get_analog(ANALOG_LEFT_Y)) > DRIVE_THRESHOLD) {
 	    left = master.get_analog(ANALOG_LEFT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_LEFT_Y))];
-	    drive_priority = DRIVING;
 			left_drive_hold_state = DRIVING;
 	  }
 	  else {
@@ -122,6 +121,10 @@ void Chassis_Systems::driveControl() {
 				left = 0;
 				resetChassisSensors(false);
 				left_drive_hold_state = IDLE;
+			}
+			else if (left_drive_hold_state == HOLDING) {
+				l_d_h_PID.current = frontLeftDriveMotor.get_position();
+				left = l_d_h_PID.output(20);
 			}
 	  }
 
@@ -131,7 +134,6 @@ void Chassis_Systems::driveControl() {
 		//profiles the motor power to follow a more linear curve
 		if (abs(master.get_analog(ANALOG_RIGHT_Y)) > DRIVE_THRESHOLD) {
 			right = master.get_analog(ANALOG_RIGHT_Y) > 0 ? TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))] : -TrueSpeedArray[abs(master.get_analog(ANALOG_RIGHT_Y))];
-			drive_priority = DRIVING;
 			right_drive_hold_state = DRIVING;
 		}
 		else {
@@ -140,19 +142,24 @@ void Chassis_Systems::driveControl() {
 				resetChassisSensors(false);
 				right_drive_hold_state = IDLE;
 			}
+			else if (right_drive_hold_state == HOLDING) {
+				r_d_h_PID.current = frontRightDriveMotor.get_position();
+				right = r_d_h_PID.output(30);
+			}
 	  }
 
 
 
-		if (master.get_digital(DIGITAL_Y)) {
-			right_drive_hold_state = HOLDING;
-			left_drive_hold_state = HOLDING;
-			l_d_h_PID.current = frontLeftDriveMotor.get_position();
-			left = l_d_h_PID.output(127);
-			r_d_h_PID.current = frontRightDriveMotor.get_position();
-			right = r_d_h_PID.output(127);
+		if (right_drive_hold_state == IDLE && left_drive_hold_state == IDLE) {
+			if (master.get_digital(DIGITAL_DOWN)) {
+				right_drive_hold_state = HOLDING;
+				left_drive_hold_state = HOLDING;
+			}
+			else {
+				right_drive_hold_state = DRIVING;
+				left_drive_hold_state = DRIVING;
+			}
 		}
-
 	}
 
 
