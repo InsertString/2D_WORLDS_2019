@@ -17,7 +17,7 @@ public:
   int output(int max_power);
   int current;
   int target;
-  int error();
+  float error();
   void set_PID_vars(float p, float i, float d, int integral_limit);
   void set_PID_vars(float p, int i_val, float d, int integral_limit, bool const_int);
   void post(int post);
@@ -25,7 +25,7 @@ private:
   float kp;
   float ki;
   float kd;
-  int data[7];
+  float data[7];
 };
 
 #endif

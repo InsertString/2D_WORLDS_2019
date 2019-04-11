@@ -59,7 +59,7 @@ public:
   int drive_system_priority;
 
 private:
-  #define DRIVE_THRESHOLD 10
+  #define DRIVE_THRESHOLD 20
   #define DRIVE_PRIORITY_CHASSIS 1
   #define DRIVE_PRIORITY_LIFT 2
   #define DRIVE_PRIORITY_BALLS 3

@@ -117,12 +117,17 @@ void Chassis_Systems::driveControl() {
 			left_drive_hold_state = DRIVING;
 	  }
 	  else {
-			if (left_drive_hold_state == DRIVING) {
+			if (!master.get_digital(DIGITAL_DOWN)) {
+				pros::lcd::print(6, "HHHHH");
 				left = 0;
-				resetChassisSensors(false);
+				frontLeftDriveMotor.tare_position();
+				backLeftDriveMotor.tare_position();
 				left_drive_hold_state = IDLE;
 			}
-			else if (left_drive_hold_state == HOLDING) {
+			else if (master.get_digital(DIGITAL_DOWN)) {
+				pros::lcd::print(6, "AAAAA");
+				l_d_h_PID.set_PID_vars(5, 0, 0, 0);
+				l_d_h_PID.target = 0;
 				l_d_h_PID.current = frontLeftDriveMotor.get_position();
 				left = l_d_h_PID.output(20);
 			}
@@ -137,29 +142,19 @@ void Chassis_Systems::driveControl() {
 			right_drive_hold_state = DRIVING;
 		}
 		else {
-			if (right_drive_hold_state == DRIVING) {
+			if (!master.get_digital(DIGITAL_DOWN)) {
 				right = 0;
-				resetChassisSensors(false);
+				frontRightDriveMotor.tare_position();
+				backRightDriveMotor.tare_position();
 				right_drive_hold_state = IDLE;
 			}
-			else if (right_drive_hold_state == HOLDING) {
+			else if (master.get_digital(DIGITAL_DOWN)) {
+				r_d_h_PID.set_PID_vars(-5, 0, 0, 0);
+				r_d_h_PID.target = 0;
 				r_d_h_PID.current = frontRightDriveMotor.get_position();
-				right = r_d_h_PID.output(30);
+				right = r_d_h_PID.output(20);
 			}
 	  }
-
-
-
-		if (right_drive_hold_state == IDLE && left_drive_hold_state == IDLE) {
-			if (master.get_digital(DIGITAL_DOWN)) {
-				right_drive_hold_state = HOLDING;
-				left_drive_hold_state = HOLDING;
-			}
-			else {
-				right_drive_hold_state = DRIVING;
-				left_drive_hold_state = DRIVING;
-			}
-		}
 	}
 
 

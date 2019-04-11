@@ -11,12 +11,9 @@ void opcontrol() {
 		vision_system.driveControl();
 		chassis.driveControl();
 
-		pros::lcd::print(0, "arm limit = %d", capScoringArmLimit.get_value());
-		pros::lcd::print(1, "intake light = %d", intakeLight1Sensor.get_value_calibrated());
-		pros::lcd::print(2, "ball count = %d", ball_system.ball_count);
-		pros::lcd::print(3, "loaded ball count = %d", ball_system.loaded_ball_count);
-		pros::lcd::print(4, "arm_value = %f", capScorerMotor.get_position());
-
+		pros::lcd::print(0, "front encoder value = %f", frontRightDriveMotor.get_position());
+		pros::lcd::print(1, "error = %f", r_d_h_PID.error());
+		pros::lcd::print(2, "current = %f", r_d_h_PID.current);
 
 		pros::delay(20);
 	}
