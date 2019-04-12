@@ -38,6 +38,9 @@
 //~~~~~~~~~~~~//
 
 
+#define RED 1
+#define BLUE 2
+
 
 
 

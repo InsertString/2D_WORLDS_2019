@@ -3,6 +3,8 @@
 
 
 //+ distance is intake direction
+
+
 void cap_auto(int colour) {
   switch (auto_step) {
     case 0 :
@@ -30,7 +32,8 @@ void cap_auto(int colour) {
     }
     break;
     case 2 :
-    action_1 = auto_turn(1200, 40);
+    //action_1 = auto_turn(1200, 40);
+    action_1 = colour == BLUE ? auto_turn(1200, 40) : auto_turn(-1200, 40);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
@@ -59,7 +62,8 @@ void cap_auto(int colour) {
     }
     break;
     case 5 :
-    action_1 = auto_turn(-900, 60);
+    //action_1 = auto_turn(-900, 60);
+    action_1 = colour == BLUE ? auto_turn(-900, 40) : auto_turn(900, 40);
     ball_system.setIntakePower(100);
 
     if (action_1.return_state == COMPLETE) {
@@ -84,7 +88,8 @@ void cap_auto(int colour) {
     }
     break;
     case 8 :
-    action_1 = auto_turn(900, 60);
+    //action_1 = auto_turn(900, 60);
+    action_1 = colour == BLUE ? auto_turn(900, 40) : auto_turn(-900, 40);
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
     }
