@@ -75,11 +75,6 @@ void initialize() {
 	capFlipperMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
 
-
-	placeholder_1 = {INCOMPLETE, 0};
-	placeholder_2 = {INCOMPLETE, 0};
-	placeholder_3 = {INCOMPLETE, 0};
-
 	auto_step = 0;
 }
 

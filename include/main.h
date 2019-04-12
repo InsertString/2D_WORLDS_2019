@@ -119,9 +119,9 @@ extern PID vision_PID;
 
 
 
-extern Auto_Action placeholder_1;
-extern Auto_Action placeholder_2;
-extern Auto_Action placeholder_3;
+extern Auto_Action action_1;
+extern Auto_Action action_2;
+extern Auto_Action action_3;
 
 extern int auto_step;
 extern int auto_drive_step;

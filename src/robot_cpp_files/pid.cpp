@@ -78,6 +78,6 @@ int PID::output(int max_power) {
   data[INTEGRAL] = data[CONST_INTEGRAL] == true ? fabs(data[INTEGRAL]) < data[INTEGRAL_LIMIT] ? (data[INTEGRAL] = data[INTEGRAL] + data[ERROR]) : (data[INTEGRAL] = 0) : (data[INTEGRAL] = data[CONST_INT_VAL]);
 
   out = (data[ERROR] * kp) + (data[INTEGRAL] * ki) + (data[DERIVATIVE] * kd);
-  out = out > max_power ? max_power : -out < -max_power ? -max_power : out;
+  out = out > max_power ? max_power : out < -max_power ? -max_power : out;
   return out;
 }

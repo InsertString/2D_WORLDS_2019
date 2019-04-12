@@ -5,5 +5,6 @@
 #include "pid.hpp"
 #include "timing.hpp"
 #include "auto_functions.hpp"
+#include "autos.hpp"
 
 #endif

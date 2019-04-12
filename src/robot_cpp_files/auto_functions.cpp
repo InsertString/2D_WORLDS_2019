@@ -2,9 +2,9 @@
 #include "robot_includes/robot_includes.hpp"
 
 
-Auto_Action placeholder_1;
-Auto_Action placeholder_2;
-Auto_Action placeholder_3;
+Auto_Action action_1;
+Auto_Action action_2;
+Auto_Action action_3;
 
 int auto_drive_step;
 int auto_turn_step;
@@ -15,9 +15,9 @@ int auto_move_flipper_step;
 int auto_step;
 
 void reset_auto_variables() {
-  placeholder_1 = {INCOMPLETE, 0};
-	placeholder_2 = {INCOMPLETE, 0};
-	placeholder_3 = {INCOMPLETE, 0};
+  action_1 = {INCOMPLETE, 0};
+	action_2 = {INCOMPLETE, 0};
+	action_3 = {INCOMPLETE, 0};
   chassis.resetChassisSensors(false);
   auto_drive_step = 0;
   auto_turn_step = 0;
@@ -59,12 +59,12 @@ Auto_Action auto_drive(int target, int max_power) {
     auto_struct.public_value = 0;
 
     //initialise auto_drive_PID
-    auto_drive_PID.set_PID_vars(1.2, 0, 0, 5);//tune these
+    auto_drive_PID.set_PID_vars(0.7, 0.1, 5, 20);//tune these
     auto_drive_PID.target = target;
     auto_drive_PID.current = 0;
 
     //initialize auto_gyro_correction_PID
-    auto_gyro_correction_PID.set_PID_vars(0, 0, 0, 0);//tune these
+    auto_gyro_correction_PID.set_PID_vars(0.7, 0, 0, 0);//tune these
     auto_gyro_correction_PID.target = 0;
     auto_gyro_correction_PID.current = 0;
 
@@ -87,7 +87,7 @@ Auto_Action auto_drive(int target, int max_power) {
     auto_drive_PID.current = frontRightDriveMotor.get_position();
     auto_gyro_correction_PID.current = gyro.get_value();
 
-    //placeholder output variables
+    //action output variables
     int right_output;
     int left_output;
 
@@ -175,6 +175,81 @@ Auto_Action auto_turn(int target, int max_power) {
     chassis.setLeft(0);
     chassis.setRight(0);
     auto_struct.return_state = COMPLETE;
+    auto_struct.public_value = 0;
+    break;
+  }
+
+  return auto_struct;
+}
+
+
+
+
+
+
+
+
+
+
+
+Auto_Action auto_move_arm(int target, int velocity) {
+  Auto_Action auto_struct;
+
+  switch (auto_move_arm_step) {
+    case 0 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = 0;
+    startTimer(AUTO_MOVE_ARM_TIMEOUT);
+    auto_move_arm_step++;
+    break;
+    case 1 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = capScorerMotor.get_position();
+
+    capScorerMotor.move_absolute(target, velocity);
+
+    if (capScorerMotor.get_position() > (target - 5) && capScorerMotor.get_position() < (target + 5)) {
+      auto_move_arm_step++;
+    }
+    break;
+    case 2 :
+    auto_struct.return_state = COMPLETE;
+    auto_struct.public_value = capScorerMotor.get_position();
+    break;
+  }
+
+  return auto_struct;
+}
+
+
+
+
+
+
+
+Auto_Action auto_move_flipper(int target, int velocity) {
+  Auto_Action auto_struct;
+
+  switch (auto_move_flipper_step) {
+    case 0 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = 0;
+    startTimer(AUTO_MOVE_FLIPPER_TIMEOUT);
+    auto_move_arm_step++;
+    break;
+    case 1 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = capFlipperMotor.get_position();
+
+    capFlipperMotor.move_absolute(target, velocity);
+
+    if (capFlipperMotor.get_position() > (target - 5) && capFlipperMotor.get_position() < (target + 5)) {
+      auto_move_flipper_step++;
+    }
+    break;
+    case 2 :
+    auto_struct.return_state = COMPLETE;
+    auto_struct.public_value = capFlipperMotor.get_position();
     break;
   }
 
