@@ -31,9 +31,6 @@ Auto_Action auto_drive(int target, int max_power);
 Auto_Action auto_turn(int target, int max_power);
 
 
-Auto_Action auto_turn_vision(int direction, int gyro_target, int vision_target);
-
-
 Auto_Action auto_shoot();
 
 
@@ -49,6 +46,7 @@ Auto_Action auto_move_flipper(int target, int velocity);
 void start_auto();
 void reset_auto_variables();
 void advance_auto_step();
+
 
 
 #endif

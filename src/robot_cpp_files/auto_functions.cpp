@@ -7,6 +7,7 @@ Auto_Action action_2;
 Auto_Action action_3;
 
 int auto_drive_step;
+int auto_drive_accel_step;
 int auto_turn_step;
 int auto_turn_vision_step;
 int auto_shoot_step;
@@ -64,7 +65,7 @@ Auto_Action auto_drive(int target, int max_power) {
     auto_drive_PID.current = 0;
 
     //initialize auto_gyro_correction_PID
-    auto_gyro_correction_PID.set_PID_vars(0.7, 0, 0, 0);//tune these
+    auto_gyro_correction_PID.set_PID_vars(0.7, 0.1, 0, 5);//tune these
     auto_gyro_correction_PID.target = 0;
     auto_gyro_correction_PID.current = 0;
 
@@ -77,6 +78,7 @@ Auto_Action auto_drive(int target, int max_power) {
 
     //advance to the next step
     auto_drive_step++;
+    auto_drive_accel_step = 0;
     break;
     case 1 :
 
@@ -95,9 +97,33 @@ Auto_Action auto_drive(int target, int max_power) {
     right_output = auto_drive_PID.output(max_power) - auto_gyro_correction_PID.output((127 - abs(max_power)));
     left_output = auto_drive_PID.output(max_power) + auto_gyro_correction_PID.output((127 - abs(max_power)));
 
-    //power the drive train
-    chassis.setRight(-right_output);
-    chassis.setLeft(-left_output);
+    switch (auto_drive_accel_step) {
+      case 0 :
+      chassis.setRight(-right_output * 0.2);
+      chassis.setLeft(-left_output * 0.2);
+      auto_drive_accel_step++;
+      break;
+      case 1 :
+      chassis.setRight(-right_output * 0.4);
+      chassis.setLeft(-left_output *0.4);
+      auto_drive_accel_step++;
+      break;
+      case 2 :
+      chassis.setRight(-right_output * 0.6);
+      chassis.setLeft(-left_output * 0.6);
+      auto_drive_accel_step++;
+      break;
+      case 3:
+      chassis.setRight(-right_output * 0.8);
+      chassis.setLeft(-left_output * 0.8);
+      auto_drive_accel_step++;
+      break;
+      case 4 :
+      chassis.setRight(-right_output);
+      chassis.setLeft(-left_output);
+      break;
+    }
+
 
     if (fabs(auto_drive_PID.error()) < 5 || getTime(AUTO_DRIVE_TIMEOUT) > 3000) {
       auto_drive_step = getTime(AUTO_DRIVE_EXIT) > 100 ? auto_drive_step + 1 : auto_drive_step;
@@ -145,6 +171,7 @@ Auto_Action auto_turn(int target, int max_power) {
     startTimer(AUTO_TURN_TIMEOUT);
     startTimer(AUTO_TURN_EXIT);
 
+    auto_drive_accel_step = 0;
     auto_turn_step++;
     break;
     case 1 :
@@ -160,8 +187,32 @@ Auto_Action auto_turn(int target, int max_power) {
     right_output = auto_turn_PID.output(max_power);
     left_output = -auto_turn_PID.output(max_power);
 
-    chassis.setRight(right_output);
-    chassis.setLeft(left_output);
+    switch (auto_drive_accel_step) {
+      case 0 :
+      chassis.setRight(-right_output * 0.2);
+      chassis.setLeft(-left_output * 0.2);
+      auto_drive_accel_step++;
+      break;
+      case 1 :
+      chassis.setRight(-right_output * 0.4);
+      chassis.setLeft(-left_output *0.4);
+      auto_drive_accel_step++;
+      break;
+      case 2 :
+      chassis.setRight(-right_output * 0.6);
+      chassis.setLeft(-left_output * 0.6);
+      auto_drive_accel_step++;
+      break;
+      case 3:
+      chassis.setRight(-right_output * 0.8);
+      chassis.setLeft(-left_output * 0.8);
+      auto_drive_accel_step++;
+      break;
+      case 4 :
+      chassis.setRight(-right_output);
+      chassis.setLeft(-left_output);
+      break;
+    }
 
     if (fabs(auto_turn_PID.error()) < 15 || getTime(AUTO_TURN_TIMEOUT) > 30000) {
       auto_turn_step = getTime(AUTO_TURN_EXIT) > 100 ? auto_turn_step + 1 : auto_turn_step;
