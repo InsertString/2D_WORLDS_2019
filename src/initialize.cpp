@@ -46,7 +46,7 @@ PID auto_gyro_correction_PID;
 
 PID auto_turn_PID;
 
-PID auto_vision_PID;
+PID auto_turn_swing_PID;
 
 PID l_d_h_PID;
 PID r_d_h_PID;

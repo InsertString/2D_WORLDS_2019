@@ -48,7 +48,7 @@ void PID::set_PID_vars(float p, int i_val, float d, int integral_limit, bool con
 
 
 void PID::post(int data_slot) {
-//  std::cout << data[data_slot];
+  std::cout << data[data_slot];
 }
 
 

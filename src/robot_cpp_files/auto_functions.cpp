@@ -9,7 +9,7 @@ Auto_Action action_3;
 int auto_drive_step;
 int auto_drive_accel_step;
 int auto_turn_step;
-int auto_turn_vision_step;
+int auto_turn_swing_step;
 int auto_shoot_step;
 int auto_move_arm_step;
 int auto_move_flipper_step;
@@ -22,7 +22,7 @@ void reset_auto_variables() {
   chassis.resetChassisSensors(false);
   auto_drive_step = 0;
   auto_turn_step = 0;
-  auto_turn_vision_step = 0;
+  auto_turn_swing_step = 0;
   auto_shoot_step = 0;
   auto_move_arm_step = 0;
   auto_move_flipper_step = 0;
@@ -47,6 +47,49 @@ void start_auto() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+  ||        
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+  ||
+
+*/
 
 
 Auto_Action auto_drive(int target, int max_power) {
@@ -154,6 +197,37 @@ Auto_Action auto_drive(int target, int max_power) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+  ||        ||
+
+*/
 Auto_Action auto_turn(int target, int max_power) {
   Auto_Action auto_struct;
 
@@ -243,6 +317,147 @@ Auto_Action auto_turn(int target, int max_power) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
+  Auto_Action auto_struct;
+
+  switch (auto_turn_swing_step) {
+    case 0 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = 0;
+
+    auto_turn_swing_PID.set_PID_vars(0.3, 1, 1, 25);
+    auto_turn_swing_PID.target = target;
+    auto_turn_swing_PID.current = 0;
+
+    chassis.resetChassisSensors(true);
+
+    startTimer(AUTO_TURN_SWING_TIMEOUT);
+    startTimer(AUTO_TURN_SWING_EXIT);
+
+    auto_drive_accel_step = 0;
+    auto_turn_swing_step++;
+    break;
+    case 1 :
+
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = auto_turn_swing_PID.error();
+
+    auto_turn_swing_PID.current = gyro.get_value();
+
+    int right_output;
+    int left_output;
+
+    if (pivot == AUTO_PIVOT_LEFT) {
+      right_output = auto_turn_swing_PID.output(max_power);
+      left_output = -auto_turn_swing_PID.output(20);
+    }
+    else if (pivot == AUTO_PIVOT_RIGHT) {
+      right_output = auto_turn_swing_PID.output(20);
+      left_output = -auto_turn_swing_PID.output(max_power);
+    }
+
+    switch (auto_drive_accel_step) {
+      case 0 :
+      chassis.setRight(-right_output * 0.2);
+      chassis.setLeft(-left_output * 0.2);
+      auto_drive_accel_step++;
+      break;
+      case 1 :
+      chassis.setRight(-right_output * 0.4);
+      chassis.setLeft(-left_output *0.4);
+      auto_drive_accel_step++;
+      break;
+      case 2 :
+      chassis.setRight(-right_output * 0.6);
+      chassis.setLeft(-left_output * 0.6);
+      auto_drive_accel_step++;
+      break;
+      case 3:
+      chassis.setRight(-right_output * 0.8);
+      chassis.setLeft(-left_output * 0.8);
+      auto_drive_accel_step++;
+      break;
+      case 4 :
+      chassis.setRight(-right_output);
+      chassis.setLeft(-left_output);
+      break;
+    }
+
+    if (fabs(auto_turn_swing_PID.error()) < 15 || getTime(AUTO_TURN_SWING_TIMEOUT) > 30000) {
+      auto_turn_swing_step = getTime(AUTO_TURN_SWING_EXIT) > 100 ? auto_turn_swing_step + 1 : auto_turn_swing_step;
+    }
+    else {
+      startTimer(AUTO_TURN_SWING_EXIT);
+    }
+
+    break;
+    case 2 :
+    chassis.setLeft(0);
+    chassis.setRight(0);
+    auto_struct.return_state = COMPLETE;
+    auto_struct.public_value = 0;
+    break;
+  }
+
+  return auto_struct;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Auto_Action auto_move_arm(int target, int velocity) {
   Auto_Action auto_struct;
 
@@ -271,6 +486,32 @@ Auto_Action auto_move_arm(int target, int velocity) {
 
   return auto_struct;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

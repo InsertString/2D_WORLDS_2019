@@ -8,8 +8,8 @@ enum Auto_Action_Return_States {
 };
 
 
-#define AUTO_TURN_LEFT 1
-#define AUTO_TURN_RIGHT 2
+#define AUTO_PIVOT_LEFT 1
+#define AUTO_PIVOT_RIGHT 2
 
 
 
@@ -29,6 +29,9 @@ Auto_Action auto_drive(int target, int max_power);
 
 
 Auto_Action auto_turn(int target, int max_power);
+
+
+Auto_Action auto_turn_swing(int target, int pivot, int max_power);
 
 
 Auto_Action auto_shoot();

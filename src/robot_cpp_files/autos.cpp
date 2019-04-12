@@ -7,7 +7,9 @@
 
 void flag_auto(int colour) {
   switch (auto_step) {
+    case 0 :
     
+    break;
   }
 }
 

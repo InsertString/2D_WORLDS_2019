@@ -107,7 +107,7 @@ extern PID auto_gyro_correction_PID;
 
 extern PID auto_turn_PID;
 
-extern PID auto_vision_PID;
+extern PID auto_turn_swing_PID;
 
 
 
@@ -129,7 +129,7 @@ extern Auto_Action action_3;
 extern int auto_step;
 extern int auto_drive_step;
 extern int auto_turn_step;
-extern int auto_turn_vision_step;
+extern int auto_turn_swing_step;
 extern int auto_shoot_step;
 extern int auto_move_arm_step;
 extern int auto_move_flipper_step;
