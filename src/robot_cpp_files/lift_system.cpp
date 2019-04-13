@@ -61,6 +61,11 @@ void Lift_Systems::driveControl() {
     scorer_velocity = 150;
     scoring = false;
   }
+  else if (master.get_digital_new_press(DIGITAL_Y)) {
+    scorer_target = 1100;
+    scorer_velocity = 100;
+    scoring = false;
+  }
   else if (master.get_digital_new_press(DIGITAL_X)) {
     scoring = true;
   }

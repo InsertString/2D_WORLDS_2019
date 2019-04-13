@@ -137,5 +137,9 @@ extern int auto_move_flipper_step;
 
 
 
+int auto_number();
+void temp_warning();
+
+
 
 #endif  // _PROS_MAIN_H_

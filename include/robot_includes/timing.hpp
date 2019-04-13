@@ -19,6 +19,8 @@
 #define AUTO_MOVE_ARM_TIMEOUT 9
 #define AUTO_MOVE_FLIPPER_TIMEOUT 10
 
+#define SOS_TIMER 11
+
 
 void startTimer(int slot);
 int getTime(int slot);
