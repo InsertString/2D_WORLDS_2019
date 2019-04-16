@@ -73,7 +73,7 @@ void start_auto() {
 
 /*
 
-  ||        
+  ||
   ||
   ||
   ||
@@ -92,7 +92,7 @@ void start_auto() {
 */
 
 
-Auto_Action auto_drive(int target, int max_power) {
+Auto_Action auto_drive(int target, int max_power, int timeout) {
   //create a new auto_action
   Auto_Action auto_struct;
 
@@ -103,12 +103,12 @@ Auto_Action auto_drive(int target, int max_power) {
     auto_struct.public_value = 0;
 
     //initialise auto_drive_PID
-    auto_drive_PID.set_PID_vars(0.7, 0.1, 5, 20);//tune these
+    auto_drive_PID.set_PID_vars(0.2, 10, 20, 20, true);//tune these
     auto_drive_PID.target = target;
     auto_drive_PID.current = 0;
 
     //initialize auto_gyro_correction_PID
-    auto_gyro_correction_PID.set_PID_vars(0.7, 0.1, 0, 5);//tune these
+    auto_gyro_correction_PID.set_PID_vars(0.7, 0, 0, 25, true);//tune these
     auto_gyro_correction_PID.target = 0;
     auto_gyro_correction_PID.current = 0;
 
@@ -121,7 +121,7 @@ Auto_Action auto_drive(int target, int max_power) {
 
     //advance to the next step
     auto_drive_step++;
-    auto_drive_accel_step = 0;
+  //  auto_drive_accel_step = 0;
     break;
     case 1 :
 
@@ -139,7 +139,7 @@ Auto_Action auto_drive(int target, int max_power) {
     //calculate output power
     right_output = auto_drive_PID.output(max_power) - auto_gyro_correction_PID.output((127 - abs(max_power)));
     left_output = auto_drive_PID.output(max_power) + auto_gyro_correction_PID.output((127 - abs(max_power)));
-
+/*
     switch (auto_drive_accel_step) {
       case 0 :
       chassis.setRight(-right_output * 0.2);
@@ -166,10 +166,13 @@ Auto_Action auto_drive(int target, int max_power) {
       chassis.setLeft(-left_output);
       break;
     }
+*/
 
+    chassis.setRight(-right_output);
+    chassis.setLeft(-left_output);
 
-    if (fabs(auto_drive_PID.error()) < 5 || getTime(AUTO_DRIVE_TIMEOUT) > 3000) {
-      auto_drive_step = getTime(AUTO_DRIVE_EXIT) > 100 ? auto_drive_step + 1 : auto_drive_step;
+    if (fabs(auto_drive_PID.error()) < 10 || getTime(AUTO_DRIVE_TIMEOUT) > timeout) {
+      auto_drive_step = getTime(AUTO_DRIVE_EXIT) > 10 ? auto_drive_step + 1 : auto_drive_step;
     }
     else {
       startTimer(AUTO_DRIVE_EXIT);
@@ -228,7 +231,7 @@ Auto_Action auto_drive(int target, int max_power) {
   ||        ||
 
 */
-Auto_Action auto_turn(int target, int max_power) {
+Auto_Action auto_turn(int target, int max_power, int timeout) {
   Auto_Action auto_struct;
 
   switch (auto_turn_step) {
@@ -236,7 +239,7 @@ Auto_Action auto_turn(int target, int max_power) {
     auto_struct.return_state = INCOMPLETE;
     auto_struct.public_value = 0;
 
-    auto_turn_PID.set_PID_vars(0.3, 1, 1, 25);
+    auto_turn_PID.set_PID_vars(0.13, 5, 10, 25, true);
     auto_turn_PID.target = target;
     auto_turn_PID.current = 0;
 
@@ -245,10 +248,13 @@ Auto_Action auto_turn(int target, int max_power) {
     startTimer(AUTO_TURN_TIMEOUT);
     startTimer(AUTO_TURN_EXIT);
 
-    auto_drive_accel_step = 0;
+  //  auto_drive_accel_step = 0;
     auto_turn_step++;
     break;
     case 1 :
+
+    if ((getTime(AUTO_TIMER) % 20) == 0)
+      printf("GYRO %f\n", gyro.get_value());
 
     auto_struct.return_state = INCOMPLETE;
     auto_struct.public_value = auto_turn_PID.error();
@@ -260,7 +266,7 @@ Auto_Action auto_turn(int target, int max_power) {
 
     right_output = auto_turn_PID.output(max_power);
     left_output = -auto_turn_PID.output(max_power);
-
+/*
     switch (auto_drive_accel_step) {
       case 0 :
       chassis.setRight(-right_output * 0.2);
@@ -287,9 +293,14 @@ Auto_Action auto_turn(int target, int max_power) {
       chassis.setLeft(-left_output);
       break;
     }
+*/
 
-    if (fabs(auto_turn_PID.error()) < 15 || getTime(AUTO_TURN_TIMEOUT) > 30000) {
-      auto_turn_step = getTime(AUTO_TURN_EXIT) > 100 ? auto_turn_step + 1 : auto_turn_step;
+
+    chassis.setRight(right_output);
+    chassis.setLeft(left_output);
+
+    if (fabs(auto_turn_PID.error()) < 15 || getTime(AUTO_TURN_TIMEOUT) > timeout) {
+      auto_turn_step = getTime(AUTO_TURN_EXIT) > 50 ? auto_turn_step + 1 : auto_turn_step;
     }
     else {
       startTimer(AUTO_TURN_EXIT);
@@ -336,7 +347,7 @@ Auto_Action auto_turn(int target, int max_power) {
 
 
 
-Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
+Auto_Action auto_turn_swing(int target, int pivot, int max_power, int timeout) {
   Auto_Action auto_struct;
 
   switch (auto_turn_swing_step) {
@@ -344,7 +355,7 @@ Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
     auto_struct.return_state = INCOMPLETE;
     auto_struct.public_value = 0;
 
-    auto_turn_swing_PID.set_PID_vars(0.3, 1, 1, 25);
+    auto_turn_swing_PID.set_PID_vars(0.17, 10, 10, 25, true);
     auto_turn_swing_PID.target = target;
     auto_turn_swing_PID.current = 0;
 
@@ -353,7 +364,7 @@ Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
     startTimer(AUTO_TURN_SWING_TIMEOUT);
     startTimer(AUTO_TURN_SWING_EXIT);
 
-    auto_drive_accel_step = 0;
+  //  auto_drive_accel_step = 0;
     auto_turn_swing_step++;
     break;
     case 1 :
@@ -374,7 +385,7 @@ Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
       right_output = auto_turn_swing_PID.output(20);
       left_output = -auto_turn_swing_PID.output(max_power);
     }
-
+/*
     switch (auto_drive_accel_step) {
       case 0 :
       chassis.setRight(-right_output * 0.2);
@@ -401,9 +412,13 @@ Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
       chassis.setLeft(-left_output);
       break;
     }
+*/
 
-    if (fabs(auto_turn_swing_PID.error()) < 15 || getTime(AUTO_TURN_SWING_TIMEOUT) > 30000) {
-      auto_turn_swing_step = getTime(AUTO_TURN_SWING_EXIT) > 100 ? auto_turn_swing_step + 1 : auto_turn_swing_step;
+    chassis.setRight(right_output);
+    chassis.setLeft(left_output);
+
+    if (fabs(auto_turn_swing_PID.error()) < 15 || getTime(AUTO_TURN_SWING_TIMEOUT) > timeout) {
+      auto_turn_swing_step = getTime(AUTO_TURN_SWING_EXIT) > 50 ? auto_turn_swing_step + 1 : auto_turn_swing_step;
     }
     else {
       startTimer(AUTO_TURN_SWING_EXIT);
@@ -458,7 +473,7 @@ Auto_Action auto_turn_swing(int target, int pivot, int max_power) {
 
 
 
-Auto_Action auto_move_arm(int target, int velocity) {
+Auto_Action auto_move_arm(int target, int velocity, int timeout) {
   Auto_Action auto_struct;
 
   switch (auto_move_arm_step) {
@@ -474,7 +489,7 @@ Auto_Action auto_move_arm(int target, int velocity) {
 
     capScorerMotor.move_absolute(target, velocity);
 
-    if (capScorerMotor.get_position() > (target - 5) && capScorerMotor.get_position() < (target + 5)) {
+    if ((capScorerMotor.get_position() > (target - 5) && capScorerMotor.get_position() < (target + 5)) || getTime(AUTO_MOVE_ARM_TIMEOUT) > timeout) {
       auto_move_arm_step++;
     }
     break;
@@ -519,7 +534,7 @@ Auto_Action auto_move_arm(int target, int velocity) {
 
 
 
-Auto_Action auto_move_flipper(int target, int velocity) {
+Auto_Action auto_move_flipper(int target, int velocity, int timeout) {
   Auto_Action auto_struct;
 
   switch (auto_move_flipper_step) {
@@ -535,7 +550,7 @@ Auto_Action auto_move_flipper(int target, int velocity) {
 
     capFlipperMotor.move_absolute(target, velocity);
 
-    if (capFlipperMotor.get_position() > (target - 5) && capFlipperMotor.get_position() < (target + 5)) {
+    if ((capFlipperMotor.get_position() > (target - 5) && capFlipperMotor.get_position() < (target + 5)) || getTime(AUTO_MOVE_FLIPPER_TIMEOUT) > timeout) {
       auto_move_flipper_step++;
     }
     break;

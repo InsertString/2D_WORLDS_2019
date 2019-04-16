@@ -25,22 +25,22 @@ struct Auto_Action {
 
 
 
-Auto_Action auto_drive(int target, int max_power);
+Auto_Action auto_drive(int target, int max_power, int timeout);
 
 
-Auto_Action auto_turn(int target, int max_power);
+Auto_Action auto_turn(int target, int max_power, int timeout);
 
 
-Auto_Action auto_turn_swing(int target, int pivot, int max_power);
+Auto_Action auto_turn_swing(int target, int pivot, int max_power, int timeout);
 
 
-Auto_Action auto_shoot();
+Auto_Action auto_shoot(int timeout);
 
 
-Auto_Action auto_move_arm(int target, int velocity);
+Auto_Action auto_move_arm(int target, int velocity, int timeout);
 
 
-Auto_Action auto_move_flipper(int target, int velocity);
+Auto_Action auto_move_flipper(int target, int velocity, int timeout);
 
 
 

@@ -42,6 +42,15 @@
 #define BLUE 2
 
 
+#define TOP 0
+#define FRONT_FLIP -450
+#define BACK_FLIP -550
+
+#define POST 1900
+#define HOLD 750
+#define DESCORE 1100
+
+
 
 
 

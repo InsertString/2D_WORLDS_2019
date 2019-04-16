@@ -15,6 +15,10 @@ int auto_number() {
 void autonomous() {
   start_auto();
   while (getTime(AUTO_TIMER) < 15001) {
+///*
+
+
+
     switch(auto_number()) {
       case 0 :
       cap_auto(RED);
@@ -30,7 +34,25 @@ void autonomous() {
       break;
     }
 
-    pros::delay(20);
+
+    //auto_drive(-2000, 100);
+//*/
+  //  pros::delay(20);
+  //action_1 = auto_turn(900, 100);
+
+//  if (action_1.return_state == COMPLETE) {//    capScorerMotor.move_absolute(400, 200);
+  //}
+
   }
 
+  frontLeftDriveMotor = 0;
+  frontRightDriveMotor = 0;
+  backLeftDriveMotor = 0;
+  backRightDriveMotor = 0;
+  intakeMotor = 0;
+  catapultMotor = 0;
+  capScorerMotor = 0;
+  capFlipperMotor = 0;
+
+  pros::delay(20);
 }

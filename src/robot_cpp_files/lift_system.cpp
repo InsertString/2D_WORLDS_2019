@@ -1,9 +1,7 @@
 #include "main.h"
 #include "robot_includes/robot_includes.hpp"
 
-#define TOP 0
-#define FRONT_FLIP -450
-#define BACK_FLIP -550
+
 
 Lift_Systems::Lift_Systems() {
   flipper_target = TOP;
@@ -36,15 +34,15 @@ void Lift_Systems::driveControl() {
     switch (flipper_target) {
       case TOP :
       flipper_target = FRONT_FLIP;
-      flipper_velocity = 50;
+      flipper_velocity = 70;
       break;
       case FRONT_FLIP :
       flipper_target = BACK_FLIP;
-      flipper_velocity = 50;
+      flipper_velocity = 70;
       break;
       case BACK_FLIP :
       flipper_target = TOP;
-      flipper_velocity = 90;
+      flipper_velocity = 70;
       break;
     }
   }
@@ -53,16 +51,16 @@ void Lift_Systems::driveControl() {
 
   if (master.get_digital_new_press(DIGITAL_B)) {
     scorer_target = 0;
-    scorer_velocity = 200;
+    scorer_velocity = 100;
     scoring = false;
   }
   else if (master.get_digital_new_press(DIGITAL_A)) {
-    scorer_target = 750;
+    scorer_target = HOLD;
     scorer_velocity = 150;
     scoring = false;
   }
   else if (master.get_digital_new_press(DIGITAL_Y)) {
-    scorer_target = 1100;
+    scorer_target = DESCORE;
     scorer_velocity = 100;
     scoring = false;
   }
@@ -70,20 +68,30 @@ void Lift_Systems::driveControl() {
     scoring = true;
   }
 
-  if (scoring == true && capScorerMotor.get_position() < 1850) {
-    scorer_target = 1900;
+  if (scoring == true && capScorerMotor.get_position() < (POST - 20)) {
+    scorer_target = POST;
     scorer_velocity = 200;
   }
-  else if (scoring == true && capScorerMotor.get_position() > 1850) {
+  else if (scoring == true && capScorerMotor.get_position() > (POST - 20)) {
     scorer_target = 0;
     scorer_velocity = 200;
     scoring = false;
   }
 
- capScorerMotor.move_absolute(scorer_target, scorer_velocity);
+  if (scorer_target != 0) {
+    capScorerMotor.move_absolute(scorer_target, scorer_velocity);
+  }
+  else if (scorer_target == 0) {
+    if (capScoringArmLimit.get_value() == true) {
+      capScorerMotor = 0;
+    }
+    else {
+      capScorerMotor = -100;
+    }
+  }
 
- if (capScoringArmLimit.get_value() == true) {
-   capScorerMotor.tare_position();
- }
+  if (capScoringArmLimit.get_value() == true) {
+    capScorerMotor.tare_position();
+  }
 
 }

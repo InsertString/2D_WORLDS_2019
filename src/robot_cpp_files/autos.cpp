@@ -8,8 +8,14 @@
 void flag_auto(int colour) {
   switch (auto_step) {
     case 0 :
-    
+    action_1 = auto_turn_swing(900, AUTO_PIVOT_LEFT, 100, 2000);
+
+    if (action_1.return_state == COMPLETE) {
+      ball_system.setIntakePower(50);
+      //advance_auto_step();
+    }
     break;
+
   }
 }
 
@@ -28,94 +34,21 @@ void flag_auto(int colour) {
 void cap_auto(int colour) {
   switch (auto_step) {
     case 0 :
+    action_1 = auto_drive(-1000, 100, 2000);
 
-    action_1 = auto_move_arm(700, 200);
-
-    if (action_1.return_state == COMPLETE) {
-      action_2 = auto_drive(-2800, 60);
-      capScorerMotor.move_absolute(0, 200);
-    }
-
-    if (action_2.return_state == COMPLETE || getTime(AUTO_STEP_TIMER) > 4000) {
+    if (action_1.return_state == COMPLETE && getTime(AUTO_STEP_TIMER) > 1000) {
       advance_auto_step();
     }
     break;
     case 1 :
-    action_1 = auto_move_arm(750, 100);
+    action_1 = auto_drive(1500, 100, 2000);
 
     if (action_1.return_state == COMPLETE) {
-      action_2 = auto_drive(1200, 60);
-
-      if (action_2.return_state == COMPLETE) {
-        advance_auto_step();
-      }
+      advance_auto_step();
     }
     break;
     case 2 :
-    //action_1 = auto_turn(1200, 40);
-    action_1 = colour == BLUE ? auto_turn(1200, 40) : auto_turn(-1200, 40);
-
-    if (action_1.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 3 :
-    action_1 = auto_drive(1000, 50);
-
-    if (abs(action_1.public_value) < 200) {
-      action_2 = auto_move_arm(1900, 100);
-    }
-
-    if (action_2.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 4 :
-    action_1 = auto_move_arm(400, 200);
-
-    if (action_1.public_value < 1500) {
-      action_2 = auto_drive(-1500, 100);
-    }
-
-    if (action_1.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 5 :
-    //action_1 = auto_turn(-900, 60);
-    action_1 = colour == BLUE ? auto_turn(-900, 40) : auto_turn(900, 40);
     ball_system.setIntakePower(100);
-
-    if (action_1.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 6 :
-    action_1 = auto_drive(1500, 70);
-
-    if (abs(action_1.public_value) < 50) {
-      action_2 = auto_move_flipper(-200, 100);
-    }
-
-    if (action_2.return_state == COMPLETE && action_1.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 7 :
-    action_1 = auto_drive(-1000, 70);
-    if (action_1.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 8 :
-    //action_1 = auto_turn(900, 60);
-    action_1 = colour == BLUE ? auto_turn(900, 40) : auto_turn(-900, 40);
-    if (action_1.return_state == COMPLETE) {
-      advance_auto_step();
-    }
-    break;
-    case 9 :
-    action_1 = auto_drive(2000, 100);
     break;
   }
 }
