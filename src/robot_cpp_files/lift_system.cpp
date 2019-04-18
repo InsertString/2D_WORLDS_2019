@@ -9,6 +9,7 @@ Lift_Systems::Lift_Systems() {
   scorer_target = 0;
   scorer_velocity = 50;
   scoring = false;
+  down = 0;
 }
 
 
@@ -53,19 +54,23 @@ void Lift_Systems::driveControl() {
     scorer_target = 0;
     scorer_velocity = 100;
     scoring = false;
+    down = 0;
   }
   else if (master.get_digital_new_press(DIGITAL_A)) {
     scorer_target = HOLD;
     scorer_velocity = 150;
     scoring = false;
+    down = 0;
   }
   else if (master.get_digital_new_press(DIGITAL_Y)) {
     scorer_target = DESCORE;
     scorer_velocity = 100;
     scoring = false;
+    down = 0;
   }
   else if (master.get_digital_new_press(DIGITAL_X)) {
     scoring = true;
+    down = 0;
   }
 
   if (scoring == true && capScorerMotor.get_position() < (POST - 20)) {
@@ -83,9 +88,12 @@ void Lift_Systems::driveControl() {
   }
   else if (scorer_target == 0) {
     if (capScoringArmLimit.get_value() == true) {
-      capScorerMotor = 0;
+      if (down == 0) {
+        capScorerMotor = 0;
+        down = 1;
+      }
     }
-    else {
+    else if (capScoringArmLimit.get_value() == false && down == 0) {
       capScorerMotor = -100;
     }
   }

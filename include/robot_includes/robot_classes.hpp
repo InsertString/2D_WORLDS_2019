@@ -163,6 +163,7 @@ private:
   int scoring;
   int scorer_target;
   int scorer_velocity;
+  int down;
 };
 
 #endif

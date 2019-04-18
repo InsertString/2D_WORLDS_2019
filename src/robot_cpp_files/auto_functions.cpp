@@ -562,3 +562,57 @@ Auto_Action auto_move_flipper(int target, int velocity, int timeout) {
 
   return auto_struct;
 }
+
+
+
+
+
+
+
+
+
+Auto_Action auto_shoot(int timeout) {
+  Auto_Action auto_struct;
+
+  switch (auto_shoot_step) {
+    case 0 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = 0;
+    startTimer(AUTO_SHOOT_TIMEOUT);
+    auto_shoot_step++;
+    break;
+    case 1 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = 0;
+
+    if (catapultLimit.get_value() == true) {
+      catapultMotor = 127;
+    }
+    else if (catapultLimit.get_value() == false || getTime(AUTO_SHOOT_TIMEOUT) > timeout) {
+      auto_shoot_step++;
+    }
+    break;
+    case 2 :
+    auto_struct.return_state = INCOMPLETE;
+    auto_struct.public_value = 0;
+
+    if (catapultLimit.get_value() == false) {
+      catapultMotor = 127;
+      startTimer(AUTO_SHOOT_EXIT);
+    }
+    else if (catapultLimit.get_value() == true) {
+      auto_struct.public_value = 1;
+      catapultMotor = 0;
+      if (getTime(AUTO_SHOOT_EXIT) > 500)
+      auto_struct.public_value = 2;
+        auto_shoot_step++;
+    }
+    break;
+    case 3 :
+    catapultMotor = 0;
+    auto_struct.return_state = COMPLETE;
+    break;
+  }
+
+  return auto_struct;
+}

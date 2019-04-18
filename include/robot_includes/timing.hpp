@@ -21,6 +21,8 @@
 
 #define SOS_TIMER 11
 
+#define AUTO_SHOOT_EXIT 12
+
 
 void startTimer(int slot);
 int getTime(int slot);
