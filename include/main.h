@@ -43,7 +43,7 @@
 
 
 #define TOP 0
-#define FRONT_FLIP -450
+#define FRONT_FLIP -480
 #define BACK_FLIP -550
 
 #define POST 1900

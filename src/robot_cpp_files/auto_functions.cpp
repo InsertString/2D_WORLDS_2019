@@ -239,7 +239,7 @@ Auto_Action auto_turn(int target, int max_power, int timeout) {
     auto_struct.return_state = INCOMPLETE;
     auto_struct.public_value = 0;
 
-    auto_turn_PID.set_PID_vars(0.13, 5, 10, 25, true);
+    auto_turn_PID.set_PID_vars(0.14, 7, 10, 25, true);
     auto_turn_PID.target = target;
     auto_turn_PID.current = 0;
 

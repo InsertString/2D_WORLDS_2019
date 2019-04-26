@@ -11,7 +11,7 @@ void flag_auto(int colour) {
     action_1 = auto_drive(2400, 100, 3000);
     ball_system.setIntakePower(-100);
 
-    if (abs(action_1.public_value) < 200 && getTime(AUTO_STEP_TIMER) > 200) {
+    if (abs(action_1.public_value) < 150 && getTime(AUTO_STEP_TIMER) > 200) {
       capFlipperMotor.move_absolute(FRONT_FLIP, 100);
     }
 
@@ -20,7 +20,7 @@ void flag_auto(int colour) {
     }
     break;
     case 1 :
-    action_1 = auto_drive(-2450, 100, 2000);
+    action_1 = auto_drive(-2380, 100, 2000);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
@@ -28,7 +28,7 @@ void flag_auto(int colour) {
     break;
     case 2 :
 
-    action_1 = colour == RED ? auto_turn(-960, 100, 1500) : auto_turn(960, 100, 1500);
+    action_1 = colour == RED ? auto_turn(-930, 100, 1200) : auto_turn(960, 100, 1200);
     capFlipperMotor.move_absolute(0, 100);
 
     if (action_1.return_state == COMPLETE && getTime(AUTO_STEP_TIMER) > 100) {
@@ -36,7 +36,7 @@ void flag_auto(int colour) {
     }
     break;
     case 3 :
-    action_1 = auto_drive(-300, 100, 1000);
+    action_1 = auto_drive(-300, 100, 500);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
@@ -47,7 +47,7 @@ void flag_auto(int colour) {
     capScorerMotor.move_absolute(HOLD, 200);
 
     if (action_1.public_value > 0) {
-      action_2 = auto_drive(-2900, 100, 4000);
+      action_2 = auto_drive(-2900, 100, 3000);
     }
 
     if (action_2.return_state == COMPLETE && capScorerMotor.get_position() > (HOLD - 10)) {
@@ -67,6 +67,127 @@ void flag_auto(int colour) {
     }
     break;
     case 7 :
+    colour == RED ? action_1 = auto_turn(930, 100, 1500) : auto_turn(-930, 100, 1500);
+
+    if (action_1.return_state == COMPLETE) {
+      advance_auto_step();
+    }
+    break;
+    case 8 :
+    capFlipperMotor.move_absolute(BACK_FLIP, 100);
+
+    if (capFlipperMotor.get_position() < (BACK_FLIP + 10)) {
+      advance_auto_step();
+    }
+    break;
+    case 9 :
+    action_1 = auto_drive(-1000, 60, 2000);
+
+    if (abs(action_1.public_value) < 500) {
+      capFlipperMotor.move_absolute(0, 50);
+    }
+
+    if (action_1.return_state == COMPLETE) {
+      advance_auto_step();
+    }
+    break;
+    case 10 :
+    
+    break;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void flag_wait(int colour, int timer) {
+  switch (auto_step) {
+    case 0 :
+    action_1 = auto_drive(2400, 100, 3000);
+    ball_system.setIntakePower(-100);
+
+    if (abs(action_1.public_value) < 150 && getTime(AUTO_STEP_TIMER) > 200) {
+      capFlipperMotor.move_absolute(FRONT_FLIP, 100);
+    }
+
+    if (action_1.return_state == COMPLETE) {
+      advance_auto_step();
+    }
+    break;
+    case 1 :
+    action_1 = auto_drive(-2380, 100, 2000);
+
+    if (action_1.return_state == COMPLETE) {
+      advance_auto_step();
+    }
+    break;
+    case 2 :
+
+    action_1 = colour == RED ? auto_turn(-930, 100, 1200) : auto_turn(960, 100, 1200);
+    capFlipperMotor.move_absolute(0, 100);
+
+    if (action_1.return_state == COMPLETE && getTime(AUTO_STEP_TIMER) > 100) {
+      advance_auto_step();
+    }
+    break;
+    case 3 :
+    action_1 = auto_drive(-300, 100, 500);
+
+    if (action_1.return_state == COMPLETE && getTime(AUTO_TIMER) > timer) {
+      advance_auto_step();
+    }
+    break;
+    case 4 :
+    action_1 = auto_shoot(2000);
+    capScorerMotor.move_absolute(HOLD, 200);
+
+    if (action_1.public_value > 0) {
+      action_2 = auto_drive(-2900, 100, 3000);
+    }
+
+    if (action_2.return_state == COMPLETE && capScorerMotor.get_position() > (HOLD - 10)) {
+      advance_auto_step();
+    }
+    break;
+    case 5 :
+    advance_auto_step();
+    break;
+    case 6 :
+    action_1 = auto_drive(2100, 100, 4000);
+    capScorerMotor.move_absolute(0, 100);
+    capFlipperMotor.move_absolute(BACK_FLIP, 100);
+
+    if (action_1.return_state == COMPLETE && capScoringArmLimit.get_value() == true) {
+      advance_auto_step();
+      ball_system.setIntakePower(0);
+    }
+    break;
+    case 7 :
     action_1 = colour == RED ? auto_turn_swing(1500, AUTO_PIVOT_RIGHT, 70, 2000) : auto_turn_swing(-1500, AUTO_PIVOT_LEFT, 70, 2000);
 
     if (action_1.return_state == COMPLETE) {
@@ -74,21 +195,19 @@ void flag_auto(int colour) {
     }
     break;
     case 8 :
+    capScorerMotor.move_absolute(0, 100);
+    capFlipperMotor.move_absolute(0, 50);
+
     action_1 = auto_drive(300, 100, 500);
 
     if (action_1.return_state == COMPLETE) {
-      capFlipperMotor.move_absolute(FRONT_FLIP, 70);
       if (getTime(AUTO_STEP_TIMER) > 800) {
         advance_auto_step();
       }
     }
     break;
     case 9 :
-    action_1 = auto_drive(-500, 100, 500);
-    ball_system.setIntakePower(-127);
-    if (action_1.return_state == COMPLETE && getTime(AUTO_STEP_TIMER) > 1000) {
-      advance_auto_step();
-    }
+    advance_auto_step();
     break;
     case 10 :
     capFlipperMotor.move_absolute(0, 200);
@@ -118,7 +237,7 @@ void flag_auto(int colour) {
     }
     break;
     case 13 :
-    action_1 = auto_turn(1800, 100, 2000);
+    colour == RED ? action_1 = auto_turn(1900, 100, 2000) : auto_turn(-1900, 100, 2000);
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
     }
@@ -131,6 +250,18 @@ void flag_auto(int colour) {
     break;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -177,7 +308,7 @@ void cap_auto(int colour) {
     }
 
     if (action_1.public_value == 1) {
-      action_2 = auto_drive(1200, 100, 2000);
+      action_2 = auto_drive(1300, 100, 2000);
 
       if (action_2.return_state == COMPLETE) {
         advance_auto_step();
@@ -185,7 +316,7 @@ void cap_auto(int colour) {
     }
     break;
     case 2 :
-    action_1 = colour == RED ? auto_turn(1200, 70, 1500) : auto_turn(-1200, 70, 1500);
+    action_1 = colour == RED ? auto_turn(1200, 60, 1300) : auto_turn(-1200, 70, 1500);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
@@ -234,7 +365,7 @@ void cap_auto(int colour) {
     }
     break;
     case 8 :
-    action_1 = auto_drive(-3000, 127, 5000);
+    action_1 = auto_drive(-3000, 127, 10000);
     intakeMotor = 0;
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();

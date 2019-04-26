@@ -3,10 +3,10 @@
 int auto_number() {
   int out;
 
-  out = (autonomousSelector.get_value() / 1023.75);
+  out = (autonomousSelector.get_value() / 682.5);
 
-  if (out == 4) {
-    out = 3;
+  if (out == 6) {
+    out = 5;
   }
 
   return out;
@@ -31,6 +31,12 @@ void autonomous() {
       break;
       case 3 :
       flag_auto(BLUE);
+      break;
+      case 4 :
+      flag_wait(RED, 8000);
+      break;
+      case 5 :
+      flag_wait(BLUE, 8000);
       break;
     }
 

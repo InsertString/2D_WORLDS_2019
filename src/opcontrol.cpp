@@ -65,6 +65,12 @@ void opcontrol() {
 				case 3 :
 				pros::lcd::print(0, "BLUE FLAG AUTO");
 				break;
+				case 4 :
+				pros::lcd::print(0, "RED FLAG WAIT AUTO");
+				break;
+				case 5 :
+				pros::lcd::print(0, "BLUE FLAG WAIT AUTO");
+				break;
 			}
 		}
 
