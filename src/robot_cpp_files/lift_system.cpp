@@ -35,7 +35,7 @@ void Lift_Systems::driveControl() {
     switch (flipper_target) {
       case TOP :
       flipper_target = FRONT_FLIP;
-      flipper_velocity = 70;
+      flipper_velocity = 80;
       break;
       case FRONT_FLIP :
       flipper_target = BACK_FLIP;
@@ -43,7 +43,7 @@ void Lift_Systems::driveControl() {
       break;
       case BACK_FLIP :
       flipper_target = TOP;
-      flipper_velocity = 70;
+      flipper_velocity = 50;
       break;
     }
   }

@@ -31,7 +31,7 @@ void flag_auto(int colour) {
     }
     break;
     case 1 :
-    action_1 = auto_drive(-2380, 100, 2000);
+    action_1 = auto_drive(-2360, 100, 2000);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
@@ -69,7 +69,7 @@ void flag_auto(int colour) {
     advance_auto_step();
     break;
     case 6 :
-    action_1 = auto_drive(2100, 100, 4000);
+    action_1 = auto_drive(1200, 100, 1000);
     capScorerMotor.move_absolute(0, 100);
 
     if (action_1.return_state == COMPLETE && capScoringArmLimit.get_value() == true) {
@@ -78,21 +78,20 @@ void flag_auto(int colour) {
     }
     break;
     case 7 :
-    colour == RED ? action_1 = auto_turn(930, 100, 1500) : auto_turn(-930, 100, 1500);
+    capFlipperMotor.move_absolute(BACK_FLIP, 100);
+    action_1 = colour == RED ? auto_turn(930, 100, 1500) : auto_turn(-930, 100, 1500);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
     }
     break;
     case 8 :
-    capFlipperMotor.move_absolute(BACK_FLIP, 100);
-
     if (capFlipperMotor.get_position() < (BACK_FLIP + 10)) {
       advance_auto_step();
     }
     break;
     case 9 :
-    action_1 = auto_drive(-1000, 60, 2000);
+    action_1 = auto_drive(1000, 40, 2000);
 
     if (abs(action_1.public_value) < 500) {
       capFlipperMotor.move_absolute(0, 50);
@@ -103,7 +102,15 @@ void flag_auto(int colour) {
     }
     break;
     case 10 :
+    action_1 = colour == RED ? auto_turn(-1450, 100, 1500) : auto_turn(1450, 100, 1500);
 
+    if (action_1.return_state == COMPLETE) {
+      advance_auto_step();
+    }
+    break;
+    case 11 :
+    action_1 = auto_drive(-2000, 100, 2000);
+    capScorerMotor.move_absolute(HOLD, 200);
     break;
   }
 }
@@ -289,9 +296,9 @@ void flag_wait(int colour, int timer) {
 void cap_auto(int colour) {
   switch (auto_step) {
     case 0 :
-    capScorerMotor.move_absolute(HOLD, 200);
+    capScorerMotor.move_absolute((HOLD + 100), 200);
 
-    if (capScorerMotor.get_position() > (HOLD - 10)) {
+    if (capScorerMotor.get_position() > (HOLD + 90)) {
       action_1.public_value = 1;
     }
 
