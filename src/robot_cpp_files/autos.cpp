@@ -5,6 +5,17 @@
 //+ distance is intake direction
 
 
+
+
+
+
+
+
+
+
+
+
+
 void flag_auto(int colour) {
   switch (auto_step) {
     case 0 :
@@ -92,7 +103,7 @@ void flag_auto(int colour) {
     }
     break;
     case 10 :
-    
+
     break;
   }
 }
