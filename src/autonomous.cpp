@@ -33,10 +33,10 @@ void autonomous() {
       flag_auto(BLUE);
       break;
       case 4 :
-      flag_wait(RED, 13800);
+      flag_wait(RED, 8000);
       break;
       case 5 :
-      flag_wait(BLUE, 8000);
+      flag_wait(BLUE, 9000);
       break;
     }
 

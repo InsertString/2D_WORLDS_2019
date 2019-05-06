@@ -44,7 +44,7 @@
 
 #define TOP 0
 #define FRONT_FLIP -500
-#define BACK_FLIP -550
+#define BACK_FLIP -600
 
 #define POST 1900
 #define HOLD 750

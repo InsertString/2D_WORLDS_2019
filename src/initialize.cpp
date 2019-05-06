@@ -74,6 +74,8 @@ void initialize() {
 	capFlipperMotor.set_gearing(MOTOR_GEARSET_36);
 	capFlipperMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
+	catapultMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+
 
 	auto_step = 0;
 }

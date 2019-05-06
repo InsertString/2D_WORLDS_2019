@@ -35,11 +35,11 @@ void Lift_Systems::driveControl() {
     switch (flipper_target) {
       case TOP :
       flipper_target = FRONT_FLIP;
-      flipper_velocity = 80;
+      flipper_velocity = 100;
       break;
       case FRONT_FLIP :
       flipper_target = BACK_FLIP;
-      flipper_velocity = 70;
+      flipper_velocity = 100;
       break;
       case BACK_FLIP :
       flipper_target = TOP;
@@ -50,7 +50,7 @@ void Lift_Systems::driveControl() {
 
   capFlipperMotor.move_absolute(flipper_target, flipper_velocity);
 
-  if (master.get_digital_new_press(DIGITAL_B)) {
+  if (master.get_digital_new_press(DIGITAL_B) || master.get_digital(DIGITAL_R1)) {
     scorer_target = 0;
     scorer_velocity = 100;
     scoring = false;

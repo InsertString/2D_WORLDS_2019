@@ -158,7 +158,7 @@ void flag_wait(int colour, int timer) {
     }
     break;
     case 1 :
-    action_1 = auto_drive(-2380, 100, 2000);
+    action_1 = auto_drive(-2330, 100, 2000);
 
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
@@ -326,7 +326,7 @@ void cap_auto(int colour) {
     }
 
     if (action_1.public_value == 1) {
-      action_2 = auto_drive(1300, 100, 2000);
+      action_2 = auto_drive(1350, 100, 2500);
 
       if (action_2.return_state == COMPLETE) {
         advance_auto_step();
@@ -341,7 +341,7 @@ void cap_auto(int colour) {
     }
     break;
     case 3 :
-    action_3 = auto_drive(600, 100, 1000);
+    action_3 = auto_drive(700, 100, 1000);
 
     if (abs(action_3.public_value) < 150) {
       capScorerMotor.move_absolute(POST, 200);
@@ -356,7 +356,7 @@ void cap_auto(int colour) {
     }
     break;
     case 4 :
-    action_3 = auto_drive(-1500, 100, 1000);
+    action_3 = auto_drive(-1550, 100, 1000);
     capScorerMotor.move_absolute(500, 200);
 
     if (action_3.return_state == COMPLETE) {
@@ -377,13 +377,13 @@ void cap_auto(int colour) {
     }
     break;
     case 7 :
-    action_1 = colour == RED ? auto_turn(-900, 100, 1000) : auto_turn(900, 100, 1000);
+    action_1 = colour == RED ? auto_turn(-960, 100, 1000) : auto_turn(960, 100, 1000);
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
     }
     break;
     case 8 :
-    action_1 = auto_drive(-3000, 127, 10000);
+    action_1 = auto_drive(-3200, 127, 10000);
     intakeMotor = 0;
     if (action_1.return_state == COMPLETE) {
       advance_auto_step();
